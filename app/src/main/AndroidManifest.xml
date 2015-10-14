@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.sb.goldandsilver" >
+
+    <!-- To access Google+ APIs: -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MetalActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- Provider 등록 authorities로 Content Provider 구분 -->
+        <provider
+            android:name=".provider.GSProvider"
+            android:authorities="com.sb.goldandsilver.GSProvider"
+            android:enabled="true"
+            android:exported="true"
+            android:multiprocess="true"
+            android:permission="true" >
+        </provider>
+
+        <activity
+            android:name=".database.AsyncTaskActivity"
+            android:label="@string/title_activity_asysnc_task" >
+        </activity>
+    </application>
+
+</manifest>
