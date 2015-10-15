@@ -12,7 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Created by Administrator on 2015-09-20.
+ * Created by namudak on 2015-09-20.
  */
 public class GoldSilverUrl {
     private String URL_METAL_GOLD=
@@ -31,8 +31,6 @@ public class GoldSilverUrl {
     }
     public void RetrieveJsonData(String start, String today) {
 
-//        List<GoldSilverItem> goldsilverList = null;
-
         String strGold= String.format(URL_METAL_GOLD, start, today);
         String strSilver= String.format(URL_METAL_SILVER, start, today);
 
@@ -47,8 +45,6 @@ public class GoldSilverUrl {
             JSONArray jsonArrayGold = jsonObjectGold.getJSONObject("dataset").getJSONArray("data");
             JSONObject jsonObjectSilver = new JSONObject(jsonStringSilver);
             JSONArray jsonArraySilver = jsonObjectSilver.getJSONObject("dataset").getJSONArray("data");
-
-//            goldsilverList = new ArrayList<GoldSilverItem>();
 
             for (int i = 0; i < jsonArrayGold.length(); i++) {
                 String[] strArrayGold = jsonArrayGold.getString(i).split(",");
@@ -72,9 +68,6 @@ public class GoldSilverUrl {
                     Float f2 = Float.valueOf(strArraySilver[1]);
                     metalStr += "," + Float.toString(f1/ f2);
                 }
-
-//                goldsilverList.add(new GoldSilverItem(
-//                        strArrayGold[0].substring(2, 12), strArrayGold[1], strArrayGold[2]));
 
                 ContentValues values = new ContentValues();
 
@@ -101,7 +94,6 @@ public class GoldSilverUrl {
             e.printStackTrace();
         }
 
-//        return goldsilverList;
     }
 
 

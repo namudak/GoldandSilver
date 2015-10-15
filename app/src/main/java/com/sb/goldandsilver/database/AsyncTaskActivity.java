@@ -31,9 +31,6 @@ public class AsyncTaskActivity extends Activity {
     private ProgressBar mProgressBar;
     private TextView mProgressBarTextView;
 
-//    private ListView mGoldSilverListView;
-//    private GoldSilverAdapter mAdapter;
-
     private static Context mContext;
     private static GSUrlHelper mUrlHelper;
     private static GSOpenHelper mOpenHelper;
@@ -68,13 +65,13 @@ public class AsyncTaskActivity extends Activity {
         if (mOpenHelper.checkDataBase(db)) {
             strStart = getLatestDate();
         } else { // if 1st loading
-            strStart = URL_START_DATE;;
+            strStart = URL_START_DATE;
         }
         sDate = new String[]{strStart, strToday};
         // Check if new data at url site, get it and insert into db
         new RetrieveUrlTask().execute(sDate);
         // Check if first run, copy carrying db into apk folder
-        mGsList = new ArrayList<GoldSilverItem>();
+        mGsList = new ArrayList<>();
         try {
             mGsList = new RetrieveOpenTask().execute("2015").get();
         } catch (ExecutionException | InterruptedException ie) {
@@ -136,7 +133,7 @@ public class AsyncTaskActivity extends Activity {
      */
     private class RetrieveOpenTask extends AsyncTask<String, Void, List> {
 
-        private List goldsilverList = new ArrayList<GoldSilverItem>();
+        private List goldsilverList = new ArrayList<>();
 
         @Override
         protected void onPreExecute() {//UI

@@ -28,9 +28,9 @@ public class LineChart {
         mGsList = list;
     }
 
-
     public GraphicalView drawLineChart() {
 
+        // x labels(yyyy-mm-dd)
         String[] strYmd = new String[mGsList.size()];
 
         // Series Set
@@ -75,7 +75,7 @@ public class LineChart {
         multiRenderer.setZoomButtonsVisible(true);
         for( int i= 0;i<strYmd.length;i++){
             if (i % 30 == 0) {
-                multiRenderer.addXTextLabel(i, strYmd[i]);
+                multiRenderer.addXTextLabel(i, strYmd[i].substring(4, 8));
             }
         }
 
