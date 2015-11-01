@@ -13,7 +13,9 @@ import android.net.Uri;
 public class GSProvider extends ContentProvider{
 
     private SQLiteDatabase db;
-    private GSOpenHelper mDbHelper;
+
+    private GSUrlHelper mDbHelper;
+    //private GSOpenHelper mDbHelper;
 
     public static final UriMatcher uriMatcher= new UriMatcher(UriMatcher.NO_MATCH);
 

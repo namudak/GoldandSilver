@@ -62,11 +62,12 @@ public class AsyncTaskActivity extends Activity {
         String strToday = dateFormat.format(cal.getTime());
         // if already apk db exist
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        if (mOpenHelper.checkDataBase(db)) {
-            strStart = getLatestDate();
-        } else { // if 1st loading
-            strStart = URL_START_DATE;
-        }
+//        if (mOpenHelper.checkDataBase(db)) {
+//            strStart = getLatestDate();
+//        } else { // if 1st loading
+//            strStart = URL_START_DATE;
+//        }
+        strStart="2015-01-01";
         sDate = new String[]{strStart, strToday};
         // Check if new data at url site, get it and insert into db
         new RetrieveUrlTask().execute(sDate);
