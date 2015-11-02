@@ -4,21 +4,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sb.goldandsilver.provider.GSContract;
 import com.sb.goldandsilver.provider.GSUrlHelper;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+
+import com.sb.goldandsilver.utility.network.NetworkUtility;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.util.List;
-
-import javax.net.ssl.SSLContext;
 
 /**
  * Created by namudak on 2015-09-20.
@@ -47,97 +39,65 @@ public class GoldSilverUrl {
         // Create database
         GSUrlHelper helper = GSUrlHelper.getInstance(mContext);
 
+        NetworkUtility network= new NetworkUtility();
+
         try {
-            Uri uri;
-            String[] valueArray= null;
-            ContentValues values = new ContentValues();
+            String jsonStringGold = network.getResponse(strGold);
+            String jsonStringSilver = network.getResponse(strSilver);
 
-            // *** Gold/Silver *** HTTP 에서 내용을 String 으로 받아 온다
-            // Gold case
-            String jsonGoldString = getResponse(strGold);
+            JSONObject jsonObjectGold = new JSONObject(jsonStringGold);
+            JSONArray jsonArrayGold = jsonObjectGold.getJSONObject("dataset").getJSONArray("data");
+            JSONObject jsonObjectSilver = new JSONObject(jsonStringSilver);
+            JSONArray jsonArraySilver = jsonObjectSilver.getJSONObject("dataset").getJSONArray("data");
 
-            JSONObject jsonGoldObject = new JSONObject(jsonGoldString).getJSONObject("dataset");
-            JSONArray jsonGoldArray = jsonGoldObject.getJSONArray("data");
+            for (int i = 0; i < jsonArrayGold.length(); i++) {
+                String[] strArrayGold = jsonArrayGold.getString(i).split(",");
+                String[] strArraySilver = jsonArraySilver.getString(i).split(",");
 
-            ObjectMapper objectGoldMapper = new ObjectMapper();
+                String metalStr= strArrayGold[0].substring(2, 12);
+                String tempStr= strArrayGold[6].replace("]", "");
+                strArrayGold[6]= tempStr;
+                tempStr= strArraySilver[3].replace("]", "");
+                strArraySilver[3]= tempStr;
+                for(int j= 1; j< 7; j++)
+                    metalStr+= ","+ (strArrayGold[j].equals("null") ? null : strArrayGold[j]) ;
+                for(int k= 1; k< 4; k++)
+                    metalStr+= ","+ (strArraySilver[k].equals("null") ? null : strArraySilver[k]);
 
-            List<Gold> goldList = objectGoldMapper.readValue(jsonGoldArray.toString(),
-                    objectGoldMapper.getTypeFactory().constructCollectionType(
-                            List.class, Gold.class
-                    ));
+                if( strArrayGold[1].endsWith("null") ||
+                        strArraySilver[1].equals("null") ) {
+                    metalStr += "," + null;
+                } else {
+                    Float f1 = Float.valueOf(strArrayGold[1]);
+                    Float f2 = Float.valueOf(strArraySilver[1]);
+                    metalStr += "," + Float.toString(f1/ f2);
+                }
 
+                ContentValues values = new ContentValues();
 
+                String[] valueArray= metalStr.split(",");
 
-            // Silver case
-            String jsonSilverString = getResponse(strSilver);
-
-            JSONObject jsonSilverObject = new JSONObject(jsonSilverString).getJSONObject("dataset");
-            JSONArray jsonSilverArray = jsonSilverObject.getJSONArray("data");
-
-            ObjectMapper objectSilverMapper = new ObjectMapper();
-
-            List<Silver> silverList = objectSilverMapper.readValue(jsonSilverArray.toString(),
-                    objectSilverMapper.getTypeFactory().constructCollectionType(
-                            List.class, Silver.class
-                    ));
-
-            int silverNum= 0;
-            for(Gold gold : goldList) {
                 values.clear();
+                values.put(GSContract.Columns.TIME, valueArray[0]);
+                values.put(GSContract.Columns.GOLD_AM_US, valueArray[1]);
+                values.put(GSContract.Columns.GOLD_PM_US, valueArray[2]);
+                values.put(GSContract.Columns.GOLD_AM_GB, valueArray[3]);
+                values.put(GSContract.Columns.GOLD_PM_GB, valueArray[4]);
+                values.put(GSContract.Columns.GOLD_AM_EU, valueArray[5]);
+                values.put(GSContract.Columns.GOLD_PM_EU, valueArray[6]);
+                values.put(GSContract.Columns.SILVER_US, valueArray[7]);
+                values.put(GSContract.Columns.SILVER_GB, valueArray[8]);
+                values.put(GSContract.Columns.SILVER_EU, valueArray[9]);
+                values.put(GSContract.Columns.GSRATIO, valueArray[10]);
 
-                values.put(GSContract.Columns.TIME, gold.TIME);
-                values.put(GSContract.Columns.GOLD_AM_US, gold.GOLD_AM_US);
-                values.put(GSContract.Columns.GOLD_PM_US, gold.GOLD_PM_US);
-                values.put(GSContract.Columns.GOLD_AM_GB, gold.GOLD_AM_GB);
-                values.put(GSContract.Columns.GOLD_PM_GB, gold.GOLD_PM_GB);
-                values.put(GSContract.Columns.GOLD_AM_EU, gold.GOLD_AM_EU);
-                values.put(GSContract.Columns.GOLD_PM_EU, gold.GOLD_PM_EU);
-
-                Silver silver= silverList.get(silverNum++);
-                values.put(GSContract.Columns.SILVER_US, silver.SILVER_US);
-                values.put(GSContract.Columns.SILVER_GB, silver.SILVER_GB);
-                values.put(GSContract.Columns.SILVER_EU, silver.SILVER_EU);
-
-                Float f1 = Float.valueOf(gold.GOLD_AM_US);
-                Float f2 = Float.valueOf(silver.SILVER_US);
-                String ratioStr =Float.toString(f1/ f2);
-                values.put(GSContract.Columns.GSRATIO, ratioStr);
-
-                uri = GSContract.CONTENT_URI;
+                Uri uri = GSContract.CONTENT_URI;
                 mContext.getContentResolver().insert(uri, values);
-
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-    }
-
-    /** url 로 부터 스트림을 읽어 String 으로 반환한다
-     * @param url
-     * @return
-     * @throws IOException
-     */
-    private String getResponse(String url) throws IOException {
-
-        // 클라이언트 오브젝트
-        OkHttpClient okHttpClient = new OkHttpClient();
-        SSLContext sslContext;
-        try {
-            sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, null, null);
-        } catch (GeneralSecurityException e) {
-            throw new AssertionError(); // 시스템이 TLS를 지원하지 않습니다
-        }
-        okHttpClient.setSslSocketFactory(sslContext.getSocketFactory());
-
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        Response response = okHttpClient.newCall(request).execute();
-
-        return response.body().string();
     }
 
 

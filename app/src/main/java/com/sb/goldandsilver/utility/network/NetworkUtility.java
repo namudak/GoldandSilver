@@ -1,84 +1,45 @@
 package com.sb.goldandsilver.utility.network;
 
-import java.io.BufferedReader;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
+import java.security.GeneralSecurityException;
+
+import javax.net.ssl.SSLContext;
 
 /**
  * Created by student on 2015-09-15.
  */
 public class NetworkUtility {
-    /**
-     * Retrieve source from url(Customized for class)
+
+    /** url 로 부터 스트림을 읽어 String 으로 반환한다
      * @param url
      * @return
-     * @throws Exception
-     */
-    public static String getReturnString(String url) throws Exception {
-        return getReturnString(getUrlConnection(url));
-    }
-
-    /**
-     * getUrlConnection
-     * @Note : url connection
-     * @return
-     * @throws Exception
-     *
-     *
-     */
-    public static URLConnection getUrlConnection(String urlString)
-                                                    throws Exception {
-
-        URL url = new URL( urlString );                 // Given url information
-        URLConnection connection = url.openConnection();// Connection
-        connection.setDoInput(true);// must be default
-        return connection;
-    }
-
-    /**
-     * getReturnString
-     * @Note : Result connected
-     * @param connection
-     * @return
      * @throws IOException
-     *
-     *
      */
-    public static String getReturnString(URLConnection connection)
-                                                    throws IOException {
+    public String getResponse(String url) throws IOException {
 
-        InputStream is = null;
+        // 클라이언트 오브젝트
+        OkHttpClient okHttpClient = new OkHttpClient();
+
+        SSLContext sslContext;
         try {
-            is = connection.getInputStream();
-        } catch (IOException ioe) {
-            if (connection instanceof HttpURLConnection) {
-                HttpURLConnection httpConn = (HttpURLConnection) connection;
-                int statusCode = httpConn.getResponseCode();
-                if (statusCode != 200) {
-                    is = httpConn.getErrorStream();
-                }
-            }
+            sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, null, null);
+        } catch (GeneralSecurityException e) {
+            throw new AssertionError(); // 시스템이 TLS를 지원하지 않습니다
         }
+        okHttpClient.setSslSocketFactory(sslContext.getSocketFactory());
 
-        InputStreamReader reader= new InputStreamReader(is, "UTF-8" );
-        BufferedReader in = new BufferedReader(reader);
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
 
-        StringBuilder builder= new StringBuilder();
+        Response response = okHttpClient.newCall(request).execute();
 
-        String decodedString;
-
-        while( ( decodedString = in.readLine() ) != null ) {
-            builder.append( decodedString );
-        }
-
-        in.close();
-
-        return builder.toString();
+        return response.body().string();
     }
-
 
 }

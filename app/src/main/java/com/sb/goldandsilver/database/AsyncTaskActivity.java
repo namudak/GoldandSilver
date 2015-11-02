@@ -2,7 +2,6 @@ package com.sb.goldandsilver.database;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -18,12 +17,10 @@ import com.sb.goldandsilver.provider.GSContract;
 import com.sb.goldandsilver.provider.GSOpenHelper;
 import com.sb.goldandsilver.provider.GSUrlHelper;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class AsyncTaskActivity extends Activity {
     private static String TAG= AsyncTaskActivity.class.getSimpleName();
@@ -67,29 +64,35 @@ public class AsyncTaskActivity extends Activity {
 //        } else { // if 1st loading
 //            strStart = URL_START_DATE;
 //        }
-        strStart="2015-01-01";
-        sDate = new String[]{strStart, strToday};
-        // Check if new data at url site, get it and insert into db
-        new RetrieveUrlTask().execute(sDate);
-        // Check if first run, copy carrying db into apk folder
-        mGsList = new ArrayList<>();
-        try {
-            mGsList = new RetrieveOpenTask().execute("2015").get();
-        } catch (ExecutionException | InterruptedException ie) {
-            ie.printStackTrace();
-        }
+
+//        sDate = new String[]{strStart, strToday};
+//        // Check if new data at url site, get it and insert into db
+//        new RetrieveUrlTask().execute(sDate);
+//        // Check if first run, copy carrying db into apk folder
+//        mGsList = new ArrayList<>();
+//        try {
+//            mGsList = new RetrieveOpenTask().execute("2015").get();
+//        } catch (ExecutionException | InterruptedException ie) {
+//            ie.printStackTrace();
+//        }
+
+
+
+        new RetrieveCurrencyTask().execute("2015");
+
+
 
         // Return result
-        Intent intent = getIntent();
-        Bundle bundle = new Bundle();
-
-        bundle.putSerializable("goldsilver", (Serializable) mGsList);
-
-        intent.putExtras(bundle);
-
-        setResult(RESULT_OK, intent);
-
-        finish();
+//        Intent intent = getIntent();
+//        Bundle bundle = new Bundle();
+//
+//        bundle.putSerializable("goldsilver", (Serializable) mGsList);
+//
+//        intent.putExtras(bundle);
+//
+//        setResult(RESULT_OK, intent);
+//
+//        finish();
 
     }
     /**
@@ -192,6 +195,42 @@ public class AsyncTaskActivity extends Activity {
         }
     }
 
+    /**
+     * AsyncTask to retrieve currency exchange rate
+     *
+     */
+    private class RetrieveCurrencyTask extends AsyncTask<String, Void, List> {
+
+        private List goldsilverList = new ArrayList<>();
+
+        @Override
+        protected void onPreExecute() {//UI
+
+            mProgressBar.setVisibility(View.VISIBLE);
+            mProgressBarTextView.setText("Retrieving data...Please wait.");
+
+        }
+        @Override
+        protected List doInBackground(String... params) {//1st parameter
+
+            CurrencyUrl currencyDb= new CurrencyUrl(mContext, mUrlHelper);
+
+            currencyDb.RetrieveCurrencyData(params[0]);
+
+            return null;
+
+        }
+        @Override
+        protected void onProgressUpdate(Void...values) {//2nd parameter
+
+        }
+        @Override
+        protected void onPostExecute(List list) {//3rd parameter
+
+            mProgressBar.setVisibility(View.GONE);
+            mProgressBarTextView.setText("");
+        }
+    }
     /**
      * Get latest date plus one from table
      *
