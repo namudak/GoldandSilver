@@ -93,6 +93,7 @@ public class MetalActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, intent);
 
         double rate= 0.0;
+        String[] diffStr= null;
 
         // Check which request it is that we're responding to
         if (requestCode == REQUEST_CODE) {
@@ -102,11 +103,16 @@ public class MetalActivity extends AppCompatActivity {
 
                 mGsList = (List<GoldSilverItem>)bundle.getSerializable("goldsilver");
                 rate= bundle.getDouble("currency");
+                diffStr= bundle.getStringArray("diffvalue");
             }
         }
+
         // Currency exchange rate
         TextView currencyTextView= (TextView)findViewById(R.id.tv_currency);
         currencyTextView.setText("USD_KRW : "+ rate);
+        // Gold price difference on previous day
+        TextView diffTextView= (TextView)findViewById(R.id.tv_diff);
+        diffTextView.setText(diffStr[2]+ ":"+ diffStr[3]+ "@"+ diffStr[0]);
 
         mAdapter= new GoldSilverAdapter(this, mGsList);
         mGoldSilverListView.setAdapter(mAdapter);
