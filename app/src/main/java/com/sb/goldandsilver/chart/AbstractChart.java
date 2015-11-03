@@ -15,9 +15,6 @@
  */
 package com.sb.goldandsilver.chart;
 
-import java.util.Date;
-import java.util.List;
-
 import org.achartengine.chart.PointStyle;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.model.MultipleCategorySeries;
@@ -28,6 +25,9 @@ import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * An abstract class for the charts to extend. It contains some methods for
@@ -150,7 +150,7 @@ public abstract class AbstractChart implements I_Chart {
   /**
    * Builds a category series using the provided values.
    * 
-   * @param titles the series titles
+   * @param title the series titles
    * @param values the values
    * @return the category series
    */
@@ -193,11 +193,13 @@ public abstract class AbstractChart implements I_Chart {
     renderer.setLabelsTextSize(15);
     renderer.setLegendTextSize(15);
     renderer.setMargins(new int[] { 20, 30, 15, 0 });
+
     for (int color : colors) {
       SimpleSeriesRenderer r = new SimpleSeriesRenderer();
       r.setColor(color);
       renderer.addSeriesRenderer(r);
     }
+
     return renderer;
   }
 
@@ -230,11 +232,13 @@ public abstract class AbstractChart implements I_Chart {
    * @return the bar multiple series renderer
    */
   protected XYMultipleSeriesRenderer buildBarRenderer(int[] colors) {
+
     XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
     renderer.setAxisTitleTextSize(16);
     renderer.setChartTitleTextSize(20);
     renderer.setLabelsTextSize(15);
     renderer.setLegendTextSize(15);
+
     int length = colors.length;
     for (int i = 0; i < length; i++) {
       SimpleSeriesRenderer r = new SimpleSeriesRenderer();

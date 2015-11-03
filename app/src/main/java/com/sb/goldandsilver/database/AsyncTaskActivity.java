@@ -2,6 +2,7 @@ package com.sb.goldandsilver.database;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -17,10 +18,12 @@ import com.sb.goldandsilver.provider.GSContract;
 import com.sb.goldandsilver.provider.GSOpenHelper;
 import com.sb.goldandsilver.provider.GSUrlHelper;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class AsyncTaskActivity extends Activity {
     private static String TAG= AsyncTaskActivity.class.getSimpleName();
@@ -29,6 +32,7 @@ public class AsyncTaskActivity extends Activity {
     private TextView mProgressBarTextView;
 
     private static Context mContext;
+
     private static GSUrlHelper mUrlHelper;
     private static GSOpenHelper mOpenHelper;
 
@@ -57,42 +61,45 @@ public class AsyncTaskActivity extends Activity {
         String[] sDate;
         String strStart;
         String strToday = dateFormat.format(cal.getTime());
+
         // if already apk db exist
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-//        if (mOpenHelper.checkDataBase(db)) {
-//            strStart = getLatestDate();
-//        } else { // if 1st loading
-//            strStart = URL_START_DATE;
-//        }
+        if (mOpenHelper.checkDataBase(db)) {
+            strStart = getLatestDate();
+        } else { // if 1st loading
+            strStart = URL_START_DATE;
+        }
 
-//        sDate = new String[]{strStart, strToday};
-//        // Check if new data at url site, get it and insert into db
-//        new RetrieveUrlTask().execute(sDate);
-//        // Check if first run, copy carrying db into apk folder
-//        mGsList = new ArrayList<>();
-//        try {
-//            mGsList = new RetrieveOpenTask().execute("2015").get();
-//        } catch (ExecutionException | InterruptedException ie) {
-//            ie.printStackTrace();
-//        }
+        sDate = new String[]{strStart, strToday};
+        // Check if new data at url site, get it and insert into db
+        new RetrieveUrlTask().execute(sDate);
+        // Check if first run, copy carrying db into apk folder
+        mGsList = new ArrayList<>();
+        try {
+            mGsList = new RetrieveOpenTask().execute("2015").get();
+        } catch (ExecutionException | InterruptedException ie) {
+            ie.printStackTrace();
+        }
 
-
-
-        new RetrieveCurrencyTask().execute("2015");
-
-
+        double rate= 0.0;
+        try {
+            rate = new RetrieveCurrencyTask().execute("USD_KRW").get();
+        } catch (ExecutionException | InterruptedException ie) {
+            ie.printStackTrace();
+        }
 
         // Return result
-//        Intent intent = getIntent();
-//        Bundle bundle = new Bundle();
-//
-//        bundle.putSerializable("goldsilver", (Serializable) mGsList);
-//
-//        intent.putExtras(bundle);
-//
-//        setResult(RESULT_OK, intent);
-//
-//        finish();
+        Intent intent = getIntent();
+        Bundle bundle = new Bundle();
+
+        bundle.putSerializable("goldsilver", (Serializable) mGsList);
+        bundle.putDouble("currency", rate);
+
+        intent.putExtras(bundle);
+
+        setResult(RESULT_OK, intent);
+
+        finish();
 
     }
     /**
@@ -199,9 +206,7 @@ public class AsyncTaskActivity extends Activity {
      * AsyncTask to retrieve currency exchange rate
      *
      */
-    private class RetrieveCurrencyTask extends AsyncTask<String, Void, List> {
-
-        private List goldsilverList = new ArrayList<>();
+    private class RetrieveCurrencyTask extends AsyncTask<String, Void, Double> {
 
         @Override
         protected void onPreExecute() {//UI
@@ -211,13 +216,11 @@ public class AsyncTaskActivity extends Activity {
 
         }
         @Override
-        protected List doInBackground(String... params) {//1st parameter
+        protected Double doInBackground(String... params) {//1st parameter
 
-            CurrencyUrl currencyDb= new CurrencyUrl(mContext, mUrlHelper);
+            CurrencyUrl currencyDb= new CurrencyUrl();
 
-            currencyDb.RetrieveCurrencyData(params[0]);
-
-            return null;
+            return currencyDb.RetrieveCurrencyData(params[0]);
 
         }
         @Override
@@ -225,7 +228,7 @@ public class AsyncTaskActivity extends Activity {
 
         }
         @Override
-        protected void onPostExecute(List list) {//3rd parameter
+        protected void onPostExecute(Double value) {//3rd parameter
 
             mProgressBar.setVisibility(View.GONE);
             mProgressBarTextView.setText("");

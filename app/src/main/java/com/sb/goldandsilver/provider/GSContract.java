@@ -7,8 +7,7 @@ import android.provider.BaseColumns;
 public final class GSContract {
     public static final String DB_NAME = "metal_db-20150927-2239";
     public static final int DB_VERSION = 1;
-    //public static final String TABLE = "goldsilver";
-    public static final String TABLE = "currencycountry";
+    public static final String TABLE = "goldsilver";
     public static final String AUTHORITY = "com.sb.goldandsilver.GSProvider";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE);
     public static final int TASKS_LIST = 1;

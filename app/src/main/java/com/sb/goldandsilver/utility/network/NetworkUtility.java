@@ -10,7 +10,7 @@ import java.security.GeneralSecurityException;
 import javax.net.ssl.SSLContext;
 
 /**
- * Created by student on 2015-09-15.
+ * Created by namudak on 2015-09-15.
  */
 public class NetworkUtility {
 

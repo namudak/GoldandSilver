@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2015-10-15.
+ * Created by namudak on 2015-10-15.
  */
 public class LineChart {
     private Context mConText;

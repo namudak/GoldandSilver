@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.sb.goldandsilver.chart.LineChart;
 import com.sb.goldandsilver.database.AsyncTaskActivity;
@@ -20,7 +21,7 @@ import java.util.List;
 
 
 /**
- * Created by student on 2015-09-14.
+ * Created by namudak on 2015-09-14.
  */
 public class MetalActivity extends AppCompatActivity {
 
@@ -91,6 +92,8 @@ public class MetalActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent intent){
         super.onActivityResult(requestCode, resultCode, intent);
 
+        double rate= 0.0;
+
         // Check which request it is that we're responding to
         if (requestCode == REQUEST_CODE) {
             // Make sure the request was successful
@@ -98,13 +101,15 @@ public class MetalActivity extends AppCompatActivity {
                 Bundle bundle= intent.getExtras();
 
                 mGsList = (List<GoldSilverItem>)bundle.getSerializable("goldsilver");
+                rate= bundle.getDouble("currency");
             }
         }
-        //Log.d(TAG, ""+ mGsList.size());
+        // Currency exchange rate
+        TextView currencyTextView= (TextView)findViewById(R.id.tv_currency);
+        currencyTextView.setText("USD_KRW : "+ rate);
 
         mAdapter= new GoldSilverAdapter(this, mGsList);
         mGoldSilverListView.setAdapter(mAdapter);
-
 
     }
 

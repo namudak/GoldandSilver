@@ -3,7 +3,7 @@ package com.sb.goldandsilver.list;
 import java.io.Serializable;
 
 /**
- * Created by student on 2015-09-14.
+ * Created by namudak on 2015-09-14.
  */
 public class GoldSilverItem implements Serializable {
     private String time;

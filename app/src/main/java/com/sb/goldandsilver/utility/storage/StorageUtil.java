@@ -3,7 +3,7 @@ package com.sb.goldandsilver.utility.storage;
 import android.os.Environment;
 
 /**
- * Created by student on 2015-09-17.
+ * Created by namudak on 2015-09-17.
  */
 public class StorageUtil {
     /* Checks if external storage is available for read and write */

@@ -6,11 +6,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sb.goldandsilver.R;
-import com.sb.goldandsilver.list.GoldSilverItem;
 
 
 /**
- * Created by student on 2015-09-14.
+ * Created by namudak on 2015-09-14.
  */
 public class GoldSilverView extends LinearLayout{
 

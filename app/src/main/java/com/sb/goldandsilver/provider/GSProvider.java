@@ -14,8 +14,8 @@ public class GSProvider extends ContentProvider{
 
     private SQLiteDatabase db;
 
-    private GSUrlHelper mDbHelper;
-    //private GSOpenHelper mDbHelper;
+    //private GSUrlHelper mDbHelper;
+    private GSOpenHelper mDbHelper;
 
     public static final UriMatcher uriMatcher= new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -27,7 +27,7 @@ public class GSProvider extends ContentProvider{
     @Override
     public boolean onCreate() {
         boolean ret= true;
-        //mDbHelper= new GSOpenHelper(getContext());
+
         mDbHelper = mDbHelper.getInstance(getContext());
         db= mDbHelper.getWritableDatabase();
 
