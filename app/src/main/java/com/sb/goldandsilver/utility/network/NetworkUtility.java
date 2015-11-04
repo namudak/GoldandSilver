@@ -13,7 +13,6 @@ import javax.net.ssl.SSLContext;
  * Created by namudak on 2015-09-15.
  */
 public class NetworkUtility {
-
     /** url 로 부터 스트림을 읽어 String 으로 반환한다
      * @param url
      * @return

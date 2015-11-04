@@ -5,7 +5,7 @@ import android.os.Environment;
 /**
  * Created by namudak on 2015-09-17.
  */
-public class StorageUtil {
+public class StorageUtility {
     /* Checks if external storage is available for read and write */
     public static boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();

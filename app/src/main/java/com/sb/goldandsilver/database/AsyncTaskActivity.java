@@ -1,10 +1,14 @@
 package com.sb.goldandsilver.database;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,7 +21,10 @@ import com.sb.goldandsilver.list.GoldSilverItem;
 import com.sb.goldandsilver.provider.GSContract;
 import com.sb.goldandsilver.provider.GSOpenHelper;
 import com.sb.goldandsilver.provider.GSUrlHelper;
+import com.sb.goldandsilver.utility.bitmap.BitmapUtility;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -96,6 +103,10 @@ public class AsyncTaskActivity extends Activity {
         } catch (ExecutionException | InterruptedException ie) {
             ie.printStackTrace();
         }
+
+        new AddFlagTask().execute();
+
+
 
         // Return result
         Intent intent = getIntent();
@@ -321,6 +332,93 @@ public class AsyncTaskActivity extends Activity {
         }
         @Override
         protected void onPostExecute(String[] string) {//3rd parameter
+
+            mProgressBar.setVisibility(View.GONE);
+            mProgressBarTextView.setText("");
+        }
+    }
+
+    /**
+     * AsyncTask to add flag to each country
+     *
+     */
+    private class AddFlagTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {//UI
+
+            mProgressBar.setVisibility(View.VISIBLE);
+            mProgressBarTextView.setText("Retrieving data...Please wait.");
+
+        }
+        @Override
+        protected Void doInBackground(Void... params) {//1st parameter
+
+            SQLiteDatabase db= mOpenHelper.getWritableDatabase();
+
+            int[] rawId= {R.raw.afg, R.raw.ago, R.raw.alb, R.raw.alg, R.raw.and,
+                    R.raw.ant, R.raw.arg, R.raw.arm, R.raw.aus, R.raw.aut,
+                    R.raw.bah, R.raw.bhu, R.raw.ben, R.raw.bel, R.raw.bdi, R.raw.bar,
+                    R.raw.bih, R.raw.biz, R.raw.blr, R.raw.bol, R.raw.bot, R.raw.bra,
+                    R.raw.brn, R.raw.bru, R.raw.bul, R.raw.bur, R.raw.ban, R.raw.ben,
+                    R.raw.caf, R.raw.cam, R.raw.can, R.raw.cgo, R.raw.cha, R.raw.chi,
+                    R.raw.chn, R.raw.civ, R.raw.cmr, R.raw.cod, R.raw.col, R.raw.com,
+                    R.raw.cpv, R.raw.crc, R.raw.cro, R.raw.cub, R.raw.cyp, R.raw.cze,
+                    R.raw.den, R.raw.dji, R.raw.dom,
+                    R.raw.ecu, R.raw.egy, R.raw.eri, R.raw.esa, R.raw.esp, R.raw.est,
+                    R.raw.eth,
+                    R.raw.fij, R.raw.fin, R.raw.fra, R.raw.fsm,
+                    R.raw.gab, R.raw.gam, R.raw.gbr, R.raw.gbs, R.raw.geq, R.raw.ger,
+                    R.raw.gha, R.raw.gre, R.raw.grn, R.raw.gua, R.raw.gui, R.raw.guy,
+                    R.raw.hai, R.raw.hon, R.raw.hun,
+                    R.raw.ina, R.raw.ind, R.raw.iri, R.raw.irl, R.raw.irq, R.raw.isl,
+                    R.raw.isr, R.raw.ita,
+                    R.raw.jam, R.raw.jor, R.raw.jpn,
+                    R.raw.kaz, R.raw.ken, R.raw.kgz, R.raw.kor, R.raw.ksa, R.raw.kuw,
+                    R.raw.lao, R.raw.lat, R.raw.lba, R.raw.lbr, R.raw.lca, R.raw.les,
+                    R.raw.lib, R.raw.lie, R.raw.ltu, R.raw.lux,
+                    R.raw.mad, R.raw.mar, R.raw.mas, R.raw.maw, R.raw.may, R.raw.mda,
+                    R.raw.mdv, R.raw.mex, R.raw.mgl, R.raw.mkd, R.raw.mli, R.raw.mlt,
+                    R.raw.mnt, R.raw.mon, R.raw.moz, R.raw.mri,
+                    R.raw.oma,
+                    R.raw.pak, R.raw.pan, R.raw.par, R.raw.per, R.raw.phi, R.raw.plw,
+                    R.raw.png, R.raw.pol, R.raw.por, R.raw.prk,
+                    R.raw.qat,
+                    R.raw.rou, R.raw.rsa, R.raw.rus, R.raw.rwa,
+                    R.raw.sam, R.raw.sen, R.raw.sey, R.raw.sin, R.raw.skn, R.raw.sle,
+                    R.raw.slo, R.raw.smr, R.raw.sol, R.raw.som, R.raw.sri, R.raw.stp,
+                    R.raw.sud, R.raw.sui, R.raw.sur, R.raw.svk, R.raw.swe, R.raw.swz,
+                    R.raw.syr,
+                    R.raw.tan, R.raw.tga, R.raw.tha, R.raw.tkm, R.raw.tog, R.raw.tpe,
+                    R.raw.tri, R.raw.tun, R.raw.tur,
+                    R.raw.uae, R.raw.uga, R.raw.ukr, R.raw.uru, R.raw.usa,
+                    R.raw.van, R.raw.ven, R.raw.vie, R.raw.vin,
+                    R.raw.yem,
+                    R.raw.zam, R.raw.zim
+            };
+
+            InputStream stream = getResources().openRawResource(R.raw.afg);
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(stream);
+            Bitmap bmap = BitmapFactory.decodeStream(bufferedInputStream);
+
+            try {
+                ContentValues cv= new ContentValues();
+                cv.put("flag", BitmapUtility.getBytes(bmap));
+                db.update("CurrencyCountry", cv, " alpha3= ? ", new String[] {"AFG"});
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            db.close();
+
+            return null;
+
+        }
+        @Override
+        protected void onProgressUpdate(Void...values) {//2nd parameter
+
+        }
+        @Override
+        protected void onPostExecute(Void result) {//3rd parameter
 
             mProgressBar.setVisibility(View.GONE);
             mProgressBarTextView.setText("");
