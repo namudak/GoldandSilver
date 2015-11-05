@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
 
-import com.sb.goldandsilver.database.api.apiurl;
+import com.sb.goldandsilver.database.api.ApiUrl;
 import com.sb.goldandsilver.provider.GSContract;
 import com.sb.goldandsilver.provider.GSUrlHelper;
 import com.sb.goldandsilver.utility.network.NetworkUtility;
@@ -27,8 +27,8 @@ public class GoldSilverUrl {
 
     public void RetrieveJsonData(String start, String today) {
 
-        String strGold= String.format(apiurl.URL_METAL_GOLD, start, today);
-        String strSilver= String.format(apiurl.URL_METAL_SILVER, start, today);
+        String strGold= String.format(ApiUrl.URL_METAL_GOLD, start, today);
+        String strSilver= String.format(ApiUrl.URL_METAL_SILVER, start, today);
 
         // Create database
         GSUrlHelper helper = GSUrlHelper.getInstance(mContext);

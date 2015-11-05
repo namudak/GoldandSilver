@@ -1,6 +1,6 @@
 package com.sb.goldandsilver.database;
 
-import com.sb.goldandsilver.database.api.apiurl;
+import com.sb.goldandsilver.database.api.ApiUrl;
 import com.sb.goldandsilver.utility.network.NetworkUtility;
 
 import org.json.JSONObject;
@@ -13,7 +13,7 @@ public class CurrencyUrl {
 
     public double RetrieveCurrencyData(String currencyUnit) {
 
-        String strCurrency= String.format(apiurl.URL_CURRENCY, currencyUnit);
+        String strCurrency= String.format(ApiUrl.URL_CURRENCY, currencyUnit);
 
         NetworkUtility network= new NetworkUtility();
 

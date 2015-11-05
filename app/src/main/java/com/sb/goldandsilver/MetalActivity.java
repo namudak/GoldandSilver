@@ -2,14 +2,10 @@ package com.sb.goldandsilver;
 
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -23,7 +19,7 @@ import android.widget.Toast;
 import com.sb.goldandsilver.database.AsyncTaskFragment;
 import com.sb.goldandsilver.events.ChartClickEvent;
 import com.sb.goldandsilver.events.DbUpdateEvent;
-import com.sb.goldandsilver.managers.Manager;
+import com.sb.goldandsilver.events.Event;
 
 import java.util.Arrays;
 import java.util.List;
@@ -112,7 +108,7 @@ public class MetalActivity extends AppCompatActivity
         mTitles = Arrays.asList(getResources().getStringArray(R.array.nav_menu_array));
 
         // 첫 번째 아이템이 선택 된 것으로 표시
-        navigationView.getMenu().getItem(0).setChecked(true);
+        //navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     @Override
@@ -154,25 +150,6 @@ public class MetalActivity extends AppCompatActivity
         return true;
     }
 
-    // FragmentPagerAdapter
-    public static class MyAdapter extends FragmentPagerAdapter {
-
-        public MyAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return Manager.getInstance(position);
-        }
-
-        @Override
-        public int getCount() {
-            return Manager.FRAGMENTS.length;
-        }
-
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -198,10 +175,10 @@ public class MetalActivity extends AppCompatActivity
             ChartClickEvent e = (ChartClickEvent) event;
 
             // Activity Transition 은 롤리팝 전용
-            Intent intent = new Intent(this, ChartActivity.class);
-            startActivity(intent);
+            //Intent intent = new Intent(this, ChartActivity.class);
+            //startActivity(intent);
         } else if (event instanceof DbUpdateEvent) {
-            mMyAdapter.notifyDataSetChanged();
+            //mMyAdapter.notifyDataSetChanged();
         }
     }
 }
