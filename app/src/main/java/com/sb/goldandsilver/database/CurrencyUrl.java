@@ -1,6 +1,6 @@
 package com.sb.goldandsilver.database;
 
-import com.sb.goldandsilver.api.apiurl;
+import com.sb.goldandsilver.database.api.apiurl;
 import com.sb.goldandsilver.utility.network.NetworkUtility;
 
 import org.json.JSONObject;

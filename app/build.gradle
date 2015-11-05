@@ -31,5 +31,7 @@ dependencies {
 
     compile 'com.squareup.okhttp:okhttp:2.5.0'
 
+    compile 'de.greenrobot:eventbus:2.4.0'
+
 
 }

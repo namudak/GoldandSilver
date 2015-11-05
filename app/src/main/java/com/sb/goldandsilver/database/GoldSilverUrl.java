@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
 
-import com.sb.goldandsilver.api.apiurl;
+import com.sb.goldandsilver.database.api.apiurl;
 import com.sb.goldandsilver.provider.GSContract;
 import com.sb.goldandsilver.provider.GSUrlHelper;
 import com.sb.goldandsilver.utility.network.NetworkUtility;

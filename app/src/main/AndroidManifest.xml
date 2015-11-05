@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MetalActivity"
+            android:name=".ImsiActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +32,7 @@
         </provider>
 
         <activity
-            android:name=".database.AsyncTaskActivity"
+            android:name=".database.AsyncTaskFragment"
             android:label="@string/title_activity_asysnc_task" >
         </activity>
     </application>
