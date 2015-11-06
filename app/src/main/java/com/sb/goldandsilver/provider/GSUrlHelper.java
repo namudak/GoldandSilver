@@ -6,12 +6,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 
-public class GSUrlHelper extends SQLiteOpenHelper {
+public class GsUrlHelper extends SQLiteOpenHelper {
 
-	private static GSUrlHelper sInstance;
+	private static GsUrlHelper sInstance;
 
-	public GSUrlHelper(Context context) {
-		super(context, GSContract.DB_NAME, null, GSContract.DB_VERSION);
+	public GsUrlHelper(Context context) {
+		super(context, GsContract.DB_NAME, null, GsContract.DB_VERSION);
 	}
 
 	@Override
@@ -30,18 +30,18 @@ public class GSUrlHelper extends SQLiteOpenHelper {
 						"%s TEXT, "+
 						"%s TEXT, "+
 						"%s TEXT"+ ")",
-						GSContract.TABLE,
-						GSContract.Columns.TIME,
-						GSContract.Columns.GOLD_AM_US,
-						GSContract.Columns.GOLD_PM_US,
-						GSContract.Columns.GOLD_AM_GB,
-						GSContract.Columns.GOLD_PM_GB,
-						GSContract.Columns.GOLD_AM_EU,
-						GSContract.Columns.GOLD_PM_EU,
-						GSContract.Columns.SILVER_US,
-						GSContract.Columns.SILVER_GB,
-						GSContract.Columns.SILVER_EU,
-						GSContract.Columns.GSRATIO
+						GsContract.TABLE,
+						GsContract.Columns.TIME,
+						GsContract.Columns.GOLD_AM_US,
+						GsContract.Columns.GOLD_PM_US,
+						GsContract.Columns.GOLD_AM_GB,
+						GsContract.Columns.GOLD_PM_GB,
+						GsContract.Columns.GOLD_AM_EU,
+						GsContract.Columns.GOLD_PM_EU,
+						GsContract.Columns.SILVER_US,
+						GsContract.Columns.SILVER_GB,
+						GsContract.Columns.SILVER_EU,
+						GsContract.Columns.GSRATIO
 						);
 
 		Log.d("GSDBHelper","Query to form table: "+sqlQuery);
@@ -50,17 +50,17 @@ public class GSUrlHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase sqlDB, int i, int i2) {
-		sqlDB.execSQL("DROP TABLE IF EXISTS "+ GSContract.TABLE);
+		sqlDB.execSQL("DROP TABLE IF EXISTS "+ GsContract.TABLE);
 		onCreate(sqlDB);
 	}
 
-	public static synchronized GSUrlHelper getInstance(Context context) {
+	public static synchronized GsUrlHelper getInstance(Context context) {
 
         // Use the application context, which will ensure that you
         // don't accidentally leak an Activity's context.
         // See this article for more information: http://bit.ly/6LRzfx
         if (sInstance == null) {
-            sInstance = new GSUrlHelper(context);
+            sInstance = new GsUrlHelper(context);
         }
         return sInstance;
     }

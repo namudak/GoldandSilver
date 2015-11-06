@@ -7,16 +7,16 @@
     <group android:id="@+id/section1"
         android:checkableBehavior="all">
         <item
-            android:id="@+id/nav_currency"
+            android:id="@+id/nav_gstext"
             android:title="@string/nav_menu_title_1" />
         <item
-            android:id="@+id/nav_goldsiver"
+            android:id="@+id/nav_currency"
             android:title="@string/nav_menu_title_2" />
     </group>
     <group android:id="@+id/section2"
         android:checkableBehavior="all">
         <item
-            android:id="@+id/nav_hanokdbupdate"
+            android:id="@+id/nav_menu_title_3"
             android:title="@string/nav_menu_title_3" />
     </group>
 

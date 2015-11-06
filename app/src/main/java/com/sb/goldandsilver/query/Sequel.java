@@ -21,7 +21,7 @@ public class Sequel {
 
         List list= new ArrayList<>();
         try {
-            list =new HanokTextTask(mContext).execute().get();
+            list =new GsTextTask(mContext, "2015").execute().get();
         } catch (ExecutionException | InterruptedException ie) {
             ie.printStackTrace();
         }
@@ -33,7 +33,7 @@ public class Sequel {
 
         List list= new ArrayList<>();
         try {
-            list =new HanokGraphTask(mContext).execute().get();
+            list =new GsGraphTask(mContext).execute().get();
         } catch (ExecutionException | InterruptedException ie) {
             ie.printStackTrace();
         }

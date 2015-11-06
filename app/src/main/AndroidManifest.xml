@@ -23,7 +23,7 @@
         </activity>
         <!-- Provider 등록 authorities로 Content Provider 구분 -->
         <provider
-            android:name=".provider.GSProvider"
+            android:name=".provider.GsProvider"
             android:authorities="com.sb.goldandsilver.GSProvider"
             android:enabled="true"
             android:exported="true"

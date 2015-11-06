@@ -5,11 +5,11 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/time_text_view"
+        android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="10:10"/>
+        android:textSize="16sp"
+        android:text="yyyy-mm-dd"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,19 +17,26 @@
         android:paddingLeft="30dp"
         android:orientation="vertical">
         <TextView
-            android:id="@+id/gold_text_view"
+            android:id="@+id/tv_goldam"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp"
-            android:textColor="#0000ff"
+            android:text="Gold AM"
+            android:textSize="16sp"
             android:textStyle="italic"/>
         <TextView
-            android:id="@+id/silver_text_view"
+            android:id="@+id/tv_goldpm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text=""/>
+            android:text="Gold PM"
+            android:textSize="16sp"
+            android:textStyle="italic"/>
+        <TextView
+            android:id="@+id/tv_silver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Silver"/>
     </LinearLayout>
+
 
 </LinearLayout>

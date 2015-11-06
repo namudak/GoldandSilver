@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.sb.goldandsilver.provider.GSOpenHelper;
+import com.sb.goldandsilver.provider.GsOpenHelper;
 
 import org.achartengine.GraphicalView;
 
@@ -16,13 +16,13 @@ import java.util.List;
 /**
  * Created by namudak on 2015-10-22.
  */
-class HanokGraphTask extends AsyncTask<Void, GraphicalView, List> {
+class GsGraphTask extends AsyncTask<Void, GraphicalView, List> {
 
-    private static final String TAG = HanokGraphTask.class.getSimpleName();
+    private static final String TAG = GsGraphTask.class.getSimpleName();
 
     private Context mContext;
 
-    private static GSOpenHelper mDbHelper;
+    private static GsOpenHelper mDbHelper;
 
     private String[] GROUPFORMAT= {
             "⑴ 한옥 건립일 현황 도표",
@@ -63,10 +63,10 @@ class HanokGraphTask extends AsyncTask<Void, GraphicalView, List> {
     private int mHanokTotal= 0;
     private int mBukchonHanokTotal= 0;
 
-    public HanokGraphTask(Context context){
+    public GsGraphTask(Context context){
         mContext= context;
 
-        mDbHelper= GSOpenHelper.getInstance(mContext);
+        mDbHelper= GsOpenHelper.getInstance(mContext);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.sb.goldandsilver.list;
+package com.sb.goldandsilver.mvctext;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,17 +11,18 @@ import com.sb.goldandsilver.R;
 /**
  * Created by namudak on 2015-09-14.
  */
-public class GoldSilverView extends LinearLayout{
+public class GsTextView extends LinearLayout{
 
     private TextView mTimeTextView;
-    private TextView mGoldTextView;
+    private TextView mGoldAmTextView;
+    private TextView mGoldPmTextView;
     private TextView mSilverTextView;
 
-    public GoldSilverView(Context context) {
+    public GsTextView(Context context) {
         super(context);
     }
 
-    public GoldSilverView(Context context, GoldSilverItem aItem) {
+    public GsTextView(Context context, GsTextItem aItem) {
         super(context);
 
         LayoutInflater layoutInflater= (LayoutInflater)context.getSystemService(
@@ -29,11 +30,13 @@ public class GoldSilverView extends LinearLayout{
 
         layoutInflater.inflate(R.layout.goldsilveritem_listview, this, true);
 
-        mTimeTextView = (TextView)findViewById(R.id.time_text_view);
+        mTimeTextView = (TextView)findViewById(R.id.tv_time);
         mTimeTextView.setText(aItem.getTime());
-        mGoldTextView = (TextView)findViewById(R.id.gold_text_view);
-        mGoldTextView.setText(aItem.getGoldAm());
-        mSilverTextView = (TextView)findViewById(R.id.silver_text_view);
+        mGoldAmTextView = (TextView)findViewById(R.id.tv_goldam);
+        mGoldAmTextView.setText(aItem.getGoldAm());
+        mGoldPmTextView = (TextView)findViewById(R.id.tv_goldpm);
+        mGoldPmTextView.setText(aItem.getGoldPm());
+        mSilverTextView = (TextView)findViewById(R.id.tv_silver);
         mSilverTextView.setText(aItem.getSilver());
     }
 
@@ -41,8 +44,11 @@ public class GoldSilverView extends LinearLayout{
     public void setTimeTextView(String time) {
         mTimeTextView.setText(time);}
     // Set Gold textview as customed
-    public void setGoldTextView(String goldam) {
-        mGoldTextView.setText(goldam);}
+    public void setGoldAmTextView(String goldam) {
+        mGoldAmTextView.setText(goldam);}
+    // Set Gold textview as customed
+    public void setGoldPmTextView(String goldpm) {
+        mGoldPmTextView.setText(goldpm);}
     // set Silver textview as customed
     public void setSilverTextView(String silver) {
         mSilverTextView.setText(silver);}

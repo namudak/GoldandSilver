@@ -1,18 +1,20 @@
-package com.sb.goldandsilver.list;
+package com.sb.goldandsilver.mvctext;
 
 import java.io.Serializable;
 
 /**
  * Created by namudak on 2015-09-14.
  */
-public class GoldSilverItem implements Serializable {
+public class GsTextItem implements Serializable {
     private String time;
     private String goldam;
+    private String goldpm;
     private String silver;
 
-    public GoldSilverItem(String time, String goldam, String silver) {
+    public GsTextItem(String time, String goldam, String goldpm, String silver) {
         this.time= time;
         this.goldam= goldam;
+        this.goldpm= goldpm;
         this.silver= silver;
     }
     public String getTime() {
@@ -23,13 +25,15 @@ public class GoldSilverItem implements Serializable {
         this.time = time;
     }
 
-    public String getGoldAm() {
-        return goldam;
-    }
+    public String getGoldAm() { return goldam; }
 
     public void setGoldAm(String goldam) {
         this.goldam = goldam;
     }
+
+    public String getGoldPm() { return goldpm; }
+
+    public void setGoldPm(String goldpm) { this.goldpm = goldpm; }
 
     public String getSilver() {
         return silver;

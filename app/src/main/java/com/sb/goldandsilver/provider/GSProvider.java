@@ -10,18 +10,18 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
-public class GSProvider extends ContentProvider{
+public class GsProvider extends ContentProvider{
 
     private SQLiteDatabase db;
 
-    //private GSUrlHelper mDbHelper;
-    private GSOpenHelper mDbHelper;
+    //private GsUrlHelper mDbHelper;
+    private GsOpenHelper mDbHelper;
 
     public static final UriMatcher uriMatcher= new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
-        uriMatcher.addURI(GSContract.AUTHORITY, GSContract.TABLE, GSContract.TASKS_LIST);
-        uriMatcher.addURI(GSContract.AUTHORITY, GSContract.TABLE+ "/#", GSContract.TASKS_ITEM);
+        uriMatcher.addURI(GsContract.AUTHORITY, GsContract.TABLE, GsContract.TASKS_LIST);
+        uriMatcher.addURI(GsContract.AUTHORITY, GsContract.TABLE+ "/#", GsContract.TASKS_ITEM);
     }
 
     @Override
@@ -48,14 +48,14 @@ public class GSProvider extends ContentProvider{
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
         SQLiteQueryBuilder qb= new SQLiteQueryBuilder();
-        qb.setTables(GSContract.TABLE);
+        qb.setTables(GsContract.TABLE);
 
         switch (uriMatcher.match(uri)) {
-            case GSContract.TASKS_LIST:
+            case GsContract.TASKS_LIST:
                 break;
 
-            case GSContract.TASKS_ITEM:
-                qb.appendWhere(GSContract.Columns._ID+ "= "+ uri.getLastPathSegment());
+            case GsContract.TASKS_ITEM:
+                qb.appendWhere(GsContract.Columns._ID+ "= "+ uri.getLastPathSegment());
                 break;
 
             default:
@@ -71,11 +71,11 @@ public class GSProvider extends ContentProvider{
     public String getType(Uri uri) {
 
         switch (uriMatcher.match(uri)) {
-            case GSContract.TASKS_LIST:
-                return GSContract.CONTENT_TYPE;
+            case GsContract.TASKS_LIST:
+                return GsContract.CONTENT_TYPE;
 
-            case GSContract.TASKS_ITEM:
-                return GSContract.CONTENT_ITEM_TYPE;
+            case GsContract.TASKS_ITEM:
+                return GsContract.CONTENT_ITEM_TYPE;
 
             default:
                 throw new IllegalArgumentException("Invalid URI: "+uri);
@@ -86,16 +86,16 @@ public class GSProvider extends ContentProvider{
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
 
-        if (uriMatcher.match(uri) != GSContract.TASKS_LIST) {
+        if (uriMatcher.match(uri) != GsContract.TASKS_LIST) {
             throw new IllegalArgumentException("Invalid URI: "+uri);
         }
 
-        long id= db.insert(GSContract.TABLE,null,contentValues);
+        long id= db.insert(GsContract.TABLE,null,contentValues);
 
         if (id>0) {
             return ContentUris.withAppendedId(uri, id);
         }
-        throw new SQLException("Error inserting into table: "+ GSContract.TABLE);
+        throw new SQLException("Error inserting into table: "+ GsContract.TABLE);
     }
 
     @Override
@@ -104,17 +104,17 @@ public class GSProvider extends ContentProvider{
         int deleted= 0;
 
         switch (uriMatcher.match(uri)) {
-            case GSContract.TASKS_LIST:
-                db.delete(GSContract.TABLE,selection,selectionArgs);
+            case GsContract.TASKS_LIST:
+                db.delete(GsContract.TABLE,selection,selectionArgs);
                 break;
 
-            case GSContract.TASKS_ITEM:
-                String where= GSContract.Columns._ID+ "= "+ uri.getLastPathSegment();
+            case GsContract.TASKS_ITEM:
+                String where= GsContract.Columns._ID+ "= "+ uri.getLastPathSegment();
                 if (!selection.isEmpty()) {
                     where += " AND "+selection;
                 }
 
-                deleted= db.delete(GSContract.TABLE,where,selectionArgs);
+                deleted= db.delete(GsContract.TABLE,where,selectionArgs);
                 break;
 
             default:
@@ -130,16 +130,16 @@ public class GSProvider extends ContentProvider{
         int updated= 0;
 
         switch (uriMatcher.match(uri)) {
-            case GSContract.TASKS_LIST:
-                db.update(GSContract.TABLE,contentValues,s,strings);
+            case GsContract.TASKS_LIST:
+                db.update(GsContract.TABLE,contentValues,s,strings);
                 break;
 
-            case GSContract.TASKS_ITEM:
-                String where= GSContract.Columns._ID+ "= "+ uri.getLastPathSegment();
+            case GsContract.TASKS_ITEM:
+                String where= GsContract.Columns._ID+ "= "+ uri.getLastPathSegment();
                 if (!s.isEmpty()) {
                     where += " AND "+s;
                 }
-                updated= db.update(GSContract.TABLE,contentValues,where,strings);
+                updated= db.update(GsContract.TABLE,contentValues,where,strings);
                 break;
 
             default:

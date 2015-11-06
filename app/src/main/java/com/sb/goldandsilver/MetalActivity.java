@@ -2,12 +2,17 @@ package com.sb.goldandsilver;
 
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,10 +21,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.sb.goldandsilver.activities.ChartActivity;
 import com.sb.goldandsilver.database.AsyncTaskFragment;
 import com.sb.goldandsilver.events.ChartClickEvent;
 import com.sb.goldandsilver.events.DbUpdateEvent;
 import com.sb.goldandsilver.events.Event;
+import com.sb.goldandsilver.managers.Manager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,8 +41,10 @@ public class MetalActivity extends AppCompatActivity
     private static final String TAG = MetalActivity.class.getSimpleName();
 
     private List<String> mTitles;
+    private ViewPager mViewPager;
 
     private MenuItem activeMenuItem;
+    private MyAdapter mMyAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,30 +73,6 @@ public class MetalActivity extends AppCompatActivity
         init();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        // 권한 승인 또는 거부 시 처리
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                    Toast.makeText(MetalActivity.this, "권한 승인 됨", Toast.LENGTH_SHORT).show();
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Toast.makeText(MetalActivity.this, "권한 거부 됨", Toast.LENGTH_SHORT).show();
-                }
-                return;
-        }
-    }
-
     private void init() {
 
         setContentView(R.layout.activity_metal);
@@ -107,20 +92,53 @@ public class MetalActivity extends AppCompatActivity
         // 타이틀 목록
         mTitles = Arrays.asList(getResources().getStringArray(R.array.nav_menu_array));
 
+        mMyAdapter = new MyAdapter(getSupportFragmentManager());
+
+        mViewPager = (ViewPager) findViewById(R.id.view_pager);
+        mViewPager.setAdapter(mMyAdapter);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                // 페이지가 변경 되면 상단 타이틀도 변경
+
+                toolbar.setTitle(mTitles.get(position));
+
+                // 네비게이션 드로워도 변경
+                navigationView.getMenu().getItem(position).setChecked(true);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         // 첫 번째 아이템이 선택 된 것으로 표시
-        //navigationView.getMenu().getItem(0).setChecked(true);
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+    // FragmentPagerAdapter
+    public static class MyAdapter extends FragmentPagerAdapter {
+
+        public MyAdapter(FragmentManager fm) {
+            super(fm);
         }
-    }
 
+        @Override
+        public Fragment getItem(int position) {
+            return Manager.getInstance(position);
+        }
+
+        @Override
+        public int getCount() {
+            return Manager.FRAGMENTS.length;
+        }
+
+    }
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -151,6 +169,19 @@ public class MetalActivity extends AppCompatActivity
     }
 
     @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    /**
+     * EventBus callback methods
+     */
+    @Override
     protected void onStart() {
         super.onStart();
 
@@ -164,6 +195,30 @@ public class MetalActivity extends AppCompatActivity
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // 권한 승인 또는 거부 시 처리
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    Toast.makeText(MetalActivity.this, "권한 승인 됨", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(MetalActivity.this, "권한 거부 됨", Toast.LENGTH_SHORT).show();
+                }
+                return;
+        }
+    }
+
     /**
      * EventBus 이벤트를 수신하는 콜백 메소드
      *
@@ -175,8 +230,8 @@ public class MetalActivity extends AppCompatActivity
             ChartClickEvent e = (ChartClickEvent) event;
 
             // Activity Transition 은 롤리팝 전용
-            //Intent intent = new Intent(this, ChartActivity.class);
-            //startActivity(intent);
+            Intent intent = new Intent(this, ChartActivity.class);
+            startActivity(intent);
         } else if (event instanceof DbUpdateEvent) {
             //mMyAdapter.notifyDataSetChanged();
         }

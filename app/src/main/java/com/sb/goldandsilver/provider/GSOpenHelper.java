@@ -11,10 +11,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class GSOpenHelper extends SQLiteOpenHelper {
+public class GsOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = "SQLiteOpenHelper";
 
-    private static GSOpenHelper sInstance;
+    private static GsOpenHelper sInstance;
     private static SQLiteDatabase db;
 
     private final Context context;
@@ -23,7 +23,7 @@ public class GSOpenHelper extends SQLiteOpenHelper {
 
     private boolean createDb = false, upgradeDb = false;
 
-    public GSOpenHelper(Context context) {
+    public GsOpenHelper(Context context) {
 
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
@@ -148,13 +148,13 @@ public class GSOpenHelper extends SQLiteOpenHelper {
      * @param context
      * @return
      */
-    public static synchronized GSOpenHelper getInstance(Context context) {
+    public static synchronized GsOpenHelper getInstance(Context context) {
 
         // Use the application context, which will ensure that you
         // don't accidentally leak an Activity's context.
         // See this article for more information: http://bit.ly/6LRzfx
         if (sInstance == null) {
-            sInstance = new GSOpenHelper(context.getApplicationContext());
+            sInstance = new GsOpenHelper(context.getApplicationContext());
         }
         return sInstance;
     }

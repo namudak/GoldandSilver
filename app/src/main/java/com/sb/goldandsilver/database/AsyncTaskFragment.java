@@ -17,13 +17,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.sb.goldandsilver.R;
-import com.sb.goldandsilver.list.GoldSilverItem;
-import com.sb.goldandsilver.provider.GSContract;
-import com.sb.goldandsilver.provider.GSOpenHelper;
-import com.sb.goldandsilver.provider.GSUrlHelper;
+import com.sb.goldandsilver.provider.GsContract;
+import com.sb.goldandsilver.provider.GsOpenHelper;
+import com.sb.goldandsilver.provider.GsUrlHelper;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -34,8 +32,8 @@ public class AsyncTaskFragment extends DialogFragment {
     private ProgressBar mProgressBar;
     private TextView mProgressBarTextView;
 
-    private static GSUrlHelper mUrlHelper;
-    private static GSOpenHelper mOpenHelper;
+    private static GsUrlHelper mUrlHelper;
+    private static GsOpenHelper mOpenHelper;
 
     private SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
     private static final String URL_START_DATE= "1968-01-02";
@@ -54,8 +52,8 @@ public class AsyncTaskFragment extends DialogFragment {
 
         this.mContext = this.getApplicationContext();
 
-        mUrlHelper = GSUrlHelper.getInstance(mContext);
-        mOpenHelper = GSOpenHelper.getInstance(mContext);
+        mUrlHelper = GsUrlHelper.getInstance(mContext);
+        mOpenHelper = GsOpenHelper.getInstance(mContext);
 
         Calendar cal = Calendar.getInstance();
 
@@ -129,8 +127,8 @@ public class AsyncTaskFragment extends DialogFragment {
         getDialog().getWindow().setBackgroundDrawable(
                 new ColorDrawable(Color.BLACK));
 
-        mUrlHelper = GSUrlHelper.getInstance(getActivity());
-        mOpenHelper = GSOpenHelper.getInstance(getActivity());
+        mUrlHelper = GsUrlHelper.getInstance(getActivity());
+        mOpenHelper = GsOpenHelper.getInstance(getActivity());
 
         Calendar cal = Calendar.getInstance();
 
@@ -150,12 +148,12 @@ public class AsyncTaskFragment extends DialogFragment {
         new RetrieveUrlTask().execute(sDate);
 
         // Check if first run, copy carrying db into apk folder
-        mGsList = new ArrayList<>();
-        try {
-            mGsList = new RetrieveOpenTask().execute("2015").get();
-        } catch (ExecutionException | InterruptedException ie) {
-            ie.printStackTrace();
-        }
+//        mGsList = new ArrayList<>();
+//        try {
+//            mGsList = new RetrieveOpenTask().execute("2015").get();
+//        } catch (ExecutionException | InterruptedException ie) {
+//            ie.printStackTrace();
+//        }
 
         // Get a currency exchange rate usd vs krw
         double rate= 0.0;
@@ -214,73 +212,6 @@ public class AsyncTaskFragment extends DialogFragment {
     }
 
     /**
-     * AsyncTask to retrieve rows from table on conditions
-     * if no db then copy carrying db to apk databases folder
-     *
-     */
-    private class RetrieveOpenTask extends AsyncTask<String, Void, List> {
-
-        private List goldsilverList = new ArrayList<>();
-
-        @Override
-        protected void onPreExecute() {//UI
-
-            mProgressBar.setVisibility(View.VISIBLE);
-            mProgressBarTextView.setText("Retrieving data...Please wait.");
-
-        }
-        @Override
-        protected List doInBackground(String... params) {//1st parameter
-
-            Uri uri = GSContract.CONTENT_URI;
-            String[] projection= new String[] {
-                    GSContract.Columns.TIME,
-                    GSContract.Columns.GOLD_AM_US,
-                    GSContract.Columns.SILVER_US
-            };
-            String selection =
-                    GSContract.Columns.TIME + " like ? ";
-            String[] selectionArgs = new String[]{
-                    "%"+ params[0]+ "%"
-            };
-            String sortOrder= GSContract.Columns.TIME+ " ASC";
-
-            Cursor cursor= getActivity().getContentResolver().query(
-                    uri,
-                    projection,
-                    selection,
-                    selectionArgs,
-                    sortOrder
-            );
-
-            while(cursor.moveToNext()) {
-                String s1= cursor.getString(cursor.getColumnIndexOrThrow(
-                        GSContract.Columns.TIME));
-                String s2= cursor.getString(cursor.getColumnIndexOrThrow(
-                        GSContract.Columns.GOLD_AM_US));
-                String s3= cursor.getString(cursor.getColumnIndexOrThrow(
-                        GSContract.Columns.SILVER_US));
-                goldsilverList.add(new GoldSilverItem(s1, s2, s3));
-            }
-
-            cursor.close();
-
-            return goldsilverList;
-
-        }
-        @Override
-        protected void onProgressUpdate(Void...values) {//2nd parameter
-
-        }
-        @Override
-        protected void onPostExecute(List list) {//3rd parameter
-
-            mProgressBar.setVisibility(View.GONE);
-            mProgressBarTextView.setText("");
-        }
-    }
-
-    /**
      * AsyncTask to retrieve currency exchange rate
      *
      */
@@ -331,18 +262,18 @@ public class AsyncTaskFragment extends DialogFragment {
         @Override
         protected String[] doInBackground(String... params) {//1st parameter
 
-            Uri uri = GSContract.CONTENT_URI;
+            Uri uri = GsContract.CONTENT_URI;
             String[] projection= new String[] {
-                    GSContract.Columns.TIME,
-                    GSContract.Columns.GOLD_AM_US,
-                    GSContract.Columns.SILVER_US
+                    GsContract.Columns.TIME,
+                    GsContract.Columns.GOLD_AM_US,
+                    GsContract.Columns.SILVER_US
             };
             String selection =
-                    GSContract.Columns.TIME + " like ? ";
+                    GsContract.Columns.TIME + " like ? ";
             String[] selectionArgs = new String[]{
                     "%"+ params[0]+ "%"
             };
-            String sortOrder= GSContract.Columns.TIME+ " DESC";
+            String sortOrder= GsContract.Columns.TIME+ " DESC";
 
             Cursor cursor= getActivity().getContentResolver().query(
                     uri,
@@ -358,19 +289,19 @@ public class AsyncTaskFragment extends DialogFragment {
 
             cursor.moveToNext();//newest date
             strArray[0]= cursor.getString(cursor.getColumnIndexOrThrow(
-                    GSContract.Columns.TIME));
+                    GsContract.Columns.TIME));
             goldValue[0]= cursor.getDouble(cursor.getColumnIndexOrThrow(
-                    GSContract.Columns.GOLD_AM_US));
+                    GsContract.Columns.GOLD_AM_US));
             silverValue[0]= cursor.getDouble(cursor.getColumnIndexOrThrow(
-                    GSContract.Columns.SILVER_US));
+                    GsContract.Columns.SILVER_US));
 
             cursor.moveToNext();//previous date
             strArray[1]= cursor.getString(cursor.getColumnIndexOrThrow(
-                    GSContract.Columns.TIME));
+                    GsContract.Columns.TIME));
             goldValue[1]= cursor.getDouble(cursor.getColumnIndexOrThrow(
-                    GSContract.Columns.GOLD_AM_US));
+                    GsContract.Columns.GOLD_AM_US));
             silverValue[1]= cursor.getDouble(cursor.getColumnIndexOrThrow(
-                    GSContract.Columns.SILVER_US));
+                    GsContract.Columns.SILVER_US));
 
             //difference value between dates
             strArray[2]= String.format("%.3f", goldValue[0] - goldValue[1]);
@@ -468,15 +399,15 @@ public class AsyncTaskFragment extends DialogFragment {
      */
     private String getLatestDate() {
 
-        Uri uri = GSContract.CONTENT_URI;
+        Uri uri = GsContract.CONTENT_URI;
         String[] projection= new String[] {
-                GSContract.Columns.TIME,
-                GSContract.Columns.GOLD_PM_US
+                GsContract.Columns.TIME,
+                GsContract.Columns.GOLD_PM_US
         };
         String selection =
-                GSContract.Columns.TIME;
+                GsContract.Columns.TIME;
 
-        String sortOrder= GSContract.Columns.TIME+ " DESC";
+        String sortOrder= GsContract.Columns.TIME+ " DESC";
 
         Cursor cursor= getActivity().getContentResolver().query(
                 uri,
@@ -489,9 +420,9 @@ public class AsyncTaskFragment extends DialogFragment {
         cursor.moveToNext();
 
         String strDate= cursor.getString(cursor.getColumnIndexOrThrow(
-                GSContract.Columns.TIME));
+                GsContract.Columns.TIME));
         String strGoldPmUs= cursor.getString(cursor.getColumnIndexOrThrow(
-                GSContract.Columns.GOLD_PM_US));
+                GsContract.Columns.GOLD_PM_US));
 
         cursor.close();
 
@@ -507,7 +438,7 @@ public class AsyncTaskFragment extends DialogFragment {
             return dateFormat.format(cal.getTime());
         } else {
             selection =
-                    GSContract.Columns.TIME + " = ? ";
+                    GsContract.Columns.TIME + " = ? ";
             String[] selectionArgs = new String[]{
                     strDate
             };

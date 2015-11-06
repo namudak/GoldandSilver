@@ -5,8 +5,8 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.sb.goldandsilver.database.api.ApiUrl;
-import com.sb.goldandsilver.provider.GSContract;
-import com.sb.goldandsilver.provider.GSUrlHelper;
+import com.sb.goldandsilver.provider.GsContract;
+import com.sb.goldandsilver.provider.GsUrlHelper;
 import com.sb.goldandsilver.utility.network.NetworkUtility;
 
 import org.json.JSONArray;
@@ -18,9 +18,9 @@ import org.json.JSONObject;
 public class GoldSilverUrl {
 
     Context mContext= null;
-    GSUrlHelper mDbHelper= null;
+    GsUrlHelper mDbHelper= null;
 
-    public GoldSilverUrl(Context context, GSUrlHelper helper){
+    public GoldSilverUrl(Context context, GsUrlHelper helper){
         this.mContext= context;
         mDbHelper= helper;
     }
@@ -31,7 +31,7 @@ public class GoldSilverUrl {
         String strSilver= String.format(ApiUrl.URL_METAL_SILVER, start, today);
 
         // Create database
-        GSUrlHelper helper = GSUrlHelper.getInstance(mContext);
+        GsUrlHelper helper = GsUrlHelper.getInstance(mContext);
 
         NetworkUtility network= new NetworkUtility();
 
@@ -72,19 +72,19 @@ public class GoldSilverUrl {
                 String[] valueArray= metalStr.split(",");
 
                 values.clear();
-                values.put(GSContract.Columns.TIME, valueArray[0]);
-                values.put(GSContract.Columns.GOLD_AM_US, valueArray[1]);
-                values.put(GSContract.Columns.GOLD_PM_US, valueArray[2]);
-                values.put(GSContract.Columns.GOLD_AM_GB, valueArray[3]);
-                values.put(GSContract.Columns.GOLD_PM_GB, valueArray[4]);
-                values.put(GSContract.Columns.GOLD_AM_EU, valueArray[5]);
-                values.put(GSContract.Columns.GOLD_PM_EU, valueArray[6]);
-                values.put(GSContract.Columns.SILVER_US, valueArray[7]);
-                values.put(GSContract.Columns.SILVER_GB, valueArray[8]);
-                values.put(GSContract.Columns.SILVER_EU, valueArray[9]);
-                values.put(GSContract.Columns.GSRATIO, valueArray[10]);
+                values.put(GsContract.Columns.TIME, valueArray[0]);
+                values.put(GsContract.Columns.GOLD_AM_US, valueArray[1]);
+                values.put(GsContract.Columns.GOLD_PM_US, valueArray[2]);
+                values.put(GsContract.Columns.GOLD_AM_GB, valueArray[3]);
+                values.put(GsContract.Columns.GOLD_PM_GB, valueArray[4]);
+                values.put(GsContract.Columns.GOLD_AM_EU, valueArray[5]);
+                values.put(GsContract.Columns.GOLD_PM_EU, valueArray[6]);
+                values.put(GsContract.Columns.SILVER_US, valueArray[7]);
+                values.put(GsContract.Columns.SILVER_GB, valueArray[8]);
+                values.put(GsContract.Columns.SILVER_EU, valueArray[9]);
+                values.put(GsContract.Columns.GSRATIO, valueArray[10]);
 
-                Uri uri = GSContract.CONTENT_URI;
+                Uri uri = GsContract.CONTENT_URI;
                 mContext.getContentResolver().insert(uri, values);
             }
 
