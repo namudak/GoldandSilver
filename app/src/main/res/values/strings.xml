@@ -5,18 +5,21 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="drawer_error">Cant found menu</string>
     <string name="action_settings">Settings</string>
     <string name="title_fragment_asysnc_task">AsysncTaskFragment</string>
 
     <!-- 네비게이션 드로워 메뉴 순서대로 작성 -->
-    <string name="nav_menu_title_1">금과 은 목록</string>
-    <string name="nav_menu_title_2">환율</string>
-    <string name="nav_menu_title_3">자료</string>
+    <string name="nav_menu_title_1">Gold and Silver Price</string>
+    <string name="nav_menu_title_2">Gold and Silver Price List</string>
+    <string name="nav_menu_title_3">Gold and Silver Price Graph</string>
+    <string name="nav_menu_title_4">International Currency</string>
 
     <string-array name="nav_menu_array">
         <item>@string/nav_menu_title_1</item>
         <item>@string/nav_menu_title_2</item>
         <item>@string/nav_menu_title_3</item>
+        <item>@string/nav_menu_title_4</item>
     </string-array>
 
     <drawable name="white">#ffffff</drawable>

@@ -24,7 +24,6 @@ import com.sb.goldandsilver.provider.GsUrlHelper;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class AsyncTaskFragment extends DialogFragment {
     private static String TAG= AsyncTaskFragment.class.getSimpleName();
@@ -118,8 +117,11 @@ public class AsyncTaskFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_asynctask, container, false);
+
         setCancelable(false);
+
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressbar);
         mProgressBarTextView = (TextView) view.findViewById(R.id.progressbar_text_view);
 
@@ -145,7 +147,7 @@ public class AsyncTaskFragment extends DialogFragment {
 
         String[] sDate = new String[]{strStart, strToday};
         // Check if new data at url site, get it and insert into db
-        new RetrieveUrlTask().execute(sDate);
+//        new RetrieveUrlTask().execute(sDate);
 
         // Check if first run, copy carrying db into apk folder
 //        mGsList = new ArrayList<>();
@@ -156,23 +158,23 @@ public class AsyncTaskFragment extends DialogFragment {
 //        }
 
         // Get a currency exchange rate usd vs krw
-        double rate= 0.0;
-        try {
-            rate = new RetrieveCurrencyTask().execute("USD_KRW").get();
-        } catch (ExecutionException | InterruptedException ie) {
-            ie.printStackTrace();
-        }
-
-        // Get a difference between a specific date and previous one
-        String[] diffStr= null;
-        try {
-            diffStr = new RetrieveDiffTask().execute("2015").get();
-        } catch (ExecutionException | InterruptedException ie) {
-            ie.printStackTrace();
-        }
+//        double rate= 0.0;
+//        try {
+//            rate = new RetrieveCurrencyTask().execute("USD_KRW").get();
+//        } catch (ExecutionException | InterruptedException ie) {
+//            ie.printStackTrace();
+//        }
+//
+//        // Get a difference between a specific date and previous one
+//        String[] diffStr= null;
+//        try {
+//            diffStr = new RetrieveDiffTask().execute("2015").get();
+//        } catch (ExecutionException | InterruptedException ie) {
+//            ie.printStackTrace();
+//        }
 
         // Just one for flag image
-        //new AddFlagTask().execute();
+//        new AddFlagTask().execute();
 
         return view;
     }
@@ -329,6 +331,7 @@ public class AsyncTaskFragment extends DialogFragment {
      *
      */
 /*
+
     private class AddFlagTask extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -346,19 +349,35 @@ public class AsyncTaskFragment extends DialogFragment {
             // get name(*) from R.raw.*
             Field[] fields = R.raw.class.getDeclaredFields();
 
+            Object unknownFlag= null;
+            Object _doFlag= null;
             for (int i = 0; i < fields.length; i++) {
                 String name = fields[i].getName();
 
-                Object theObj= new R.raw();
+                Object theObj = new R.raw();
 
-                Object value= null;
+                Object value = null;
                 try {
                     value = fields[i].get(theObj);
+                    if(name.equals("_do")){
+                        _doFlag= value;
+                    }
+                    if (name.equals("nations")) {
+                        unknownFlag = value;
+                        continue;
+                    }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
 
-                InputStream stream = getResources().openRawResource((int)value);
+                InputStream stream;
+                if (name.equals("_do")) {
+                    name="do";
+                    stream = getResources().openRawResource((int)_doFlag);
+                }else {
+                    stream = getResources().openRawResource((int)value);
+                }
+
                 BufferedInputStream bufferedInputStream = new BufferedInputStream(stream);
                 Bitmap bmap = BitmapFactory.decodeStream(bufferedInputStream);
 
@@ -375,6 +394,36 @@ public class AsyncTaskFragment extends DialogFragment {
                     ex.printStackTrace();
                 }
             }
+
+            try {
+                InputStream stream = getResources().openRawResource((int)unknownFlag);
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(stream);
+                Bitmap bmap = BitmapFactory.decodeStream(bufferedInputStream);
+
+                ContentValues cv = new ContentValues();
+                cv.put("flag", BitmapUtility.getBytes(bmap));
+                db.update(
+                        "CurrencyCountry",              // table name
+                        cv,                             // content values
+                        " id= ? ",                      // where
+                        new String[]{"SH"}// ? argument
+                );
+                db.update(
+                        "CurrencyCountry",              // table name
+                        cv,                             // content values
+                        " id= ? ",                      // where
+                        new String[]{"SS"}// ? argument
+                );
+                db.update(
+                        "CurrencyCountry",              // table name
+                        cv,                             // content values
+                        " id= ? ",                      // where
+                        new String[]{"WF"}// ? argument
+                );
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
             db.close();
 
             return null;
@@ -391,6 +440,7 @@ public class AsyncTaskFragment extends DialogFragment {
             mProgressBarTextView.setText("");
         }
     }
+
 */
 
     /**

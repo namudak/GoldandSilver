@@ -31,7 +31,8 @@ public class GsTextAdapter extends BaseAdapter {
      */
     public View getView(int position, View convertView, ViewGroup parent) {
         String TIMEFORMAT= "%s";
-        String METALFORMAT= "Gold(%s) : %s";
+        String METALGOLDFORMAT= "Gold(%s) : %s";
+        String METALSILVERFORMAT= "Silver : %s";
 
         GsTextView itemView;
 
@@ -45,9 +46,9 @@ public class GsTextAdapter extends BaseAdapter {
         }
 
         itemView.setTimeTextView(String.format(TIMEFORMAT, aItem.getTime()));
-        itemView.setGoldAmTextView(String.format(METALFORMAT, "AM", aItem.getGoldAm()));
-        itemView.setGoldPmTextView(String.format(METALFORMAT, "PM", aItem.getGoldPm()));
-        itemView.setSilverTextView(String.format("Silver Price : " + METALFORMAT, aItem.getSilver()));
+        itemView.setGoldAmTextView(String.format(METALGOLDFORMAT, "AM", aItem.getGoldAm()));
+        itemView.setGoldPmTextView(String.format(METALGOLDFORMAT, "PM", aItem.getGoldPm()));
+        itemView.setSilverTextView(String.format(METALSILVERFORMAT, aItem.getSilver()));
 
         // Return view
         return itemView;

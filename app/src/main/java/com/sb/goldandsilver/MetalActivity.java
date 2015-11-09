@@ -2,7 +2,6 @@ package com.sb.goldandsilver;
 
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -17,24 +16,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.sb.goldandsilver.activities.ChartActivity;
-import com.sb.goldandsilver.database.AsyncTaskFragment;
-import com.sb.goldandsilver.events.ChartClickEvent;
-import com.sb.goldandsilver.events.DbUpdateEvent;
-import com.sb.goldandsilver.events.Event;
 import com.sb.goldandsilver.managers.Manager;
 
 import java.util.Arrays;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
-
-public class MetalActivity extends AppCompatActivity
-                    implements NavigationView.OnNavigationItemSelectedListener {
+public class MetalActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 77;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
@@ -43,8 +33,8 @@ public class MetalActivity extends AppCompatActivity
     private List<String> mTitles;
     private ViewPager mViewPager;
 
-    private MenuItem activeMenuItem;
-    private MyAdapter mMyAdapter;
+    private MenuItem mMenuItem;
+    private MyPageAdapter mMyPageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,22 +70,39 @@ public class MetalActivity extends AppCompatActivity
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
-
-        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
         // 타이틀 목록
         mTitles = Arrays.asList(getResources().getStringArray(R.array.nav_menu_array));
 
-        mMyAdapter = new MyAdapter(getSupportFragmentManager());
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                //Checking if the item is in checked state or not, if not set it to checked state.
+                if (menuItem.isChecked()) menuItem.setChecked(false);
+                else menuItem.setChecked(true);
+
+                //Closing drawer on item click
+                drawerLayout.closeDrawers();
+
+                String title = menuItem.getTitle().toString();
+                int index = mTitles.indexOf(title);
+                mViewPager.setCurrentItem(index, true);
+
+                return true;
+            }
+        });
+
+        mMyPageAdapter = new MyPageAdapter(getSupportFragmentManager());
 
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
-        mViewPager.setAdapter(mMyAdapter);
+        mViewPager.setAdapter(mMyPageAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -105,7 +112,6 @@ public class MetalActivity extends AppCompatActivity
             @Override
             public void onPageSelected(int position) {
                 // 페이지가 변경 되면 상단 타이틀도 변경
-
                 toolbar.setTitle(mTitles.get(position));
 
                 // 네비게이션 드로워도 변경
@@ -117,14 +123,15 @@ public class MetalActivity extends AppCompatActivity
 
             }
         });
+
         // 첫 번째 아이템이 선택 된 것으로 표시
         navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     // FragmentPagerAdapter
-    public static class MyAdapter extends FragmentPagerAdapter {
+    public static class MyPageAdapter extends FragmentPagerAdapter {
 
-        public MyAdapter(FragmentManager fm) {
+        public MyPageAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -139,34 +146,6 @@ public class MetalActivity extends AppCompatActivity
         }
 
     }
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem menuItem) {
-        String title = menuItem.getTitle().toString();
-        Log.d(TAG, "title : " + title);
-        int index = mTitles.indexOf(title);
-        Log.d(TAG, "index : " + index);
-
-        if (index == 2) {
-            AsyncTaskFragment dialogFragment = new AsyncTaskFragment();
-            dialogFragment.show(getFragmentManager(), "AsyncTaskFragment");
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.closeDrawers();
-            return true;
-        }
-
-        if (activeMenuItem != null) {
-            activeMenuItem.setChecked(false);
-        }
-        activeMenuItem = menuItem;
-        menuItem.setChecked(true);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        drawer.closeDrawers();
-
-        return true;
-    }
 
     @Override
     public void onBackPressed() {
@@ -176,23 +155,6 @@ public class MetalActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
-    }
-
-    /**
-     * EventBus callback methods
-     */
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -218,22 +180,39 @@ public class MetalActivity extends AppCompatActivity
                 return;
         }
     }
+/*
+    *//**
+     * EventBus callback methods
+     *//*
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-    /**
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        EventBus.getDefault().unregister(this);
+    }
+
+    *//**
      * EventBus 이벤트를 수신하는 콜백 메소드
      *
      * @param event ChartClickEvent 등등
-     */
+     *//*
     public void onEvent(Event event) {
         // com.seoul.hanokmania.views.adapters.HanokGraphAdapter 에서 호출 됨
         if (event instanceof ChartClickEvent) {
             ChartClickEvent e = (ChartClickEvent) event;
 
             // Activity Transition 은 롤리팝 전용
-            Intent intent = new Intent(this, ChartActivity.class);
+            Intent intent = new Intent(this, GsLineChart.class);
             startActivity(intent);
         } else if (event instanceof DbUpdateEvent) {
-            //mMyAdapter.notifyDataSetChanged();
+            //mMyPageAdapter.notifyDataSetChanged();
         }
-    }
+    }*/
 }

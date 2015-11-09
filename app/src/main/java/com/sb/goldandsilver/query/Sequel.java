@@ -17,11 +17,23 @@ public class Sequel {
         mContext= context;
     }
 
+    public List selectGs() {
+
+        List list= new ArrayList<>();
+        try {
+            list =new GsTask(mContext).execute().get();
+        } catch (ExecutionException | InterruptedException ie) {
+            ie.printStackTrace();
+        }
+
+        return list;
+    }
+
     public List selectText(){
 
         List list= new ArrayList<>();
         try {
-            list =new GsTextTask(mContext, "2015").execute().get();
+            list =new GsTextTask(mContext).execute("2015").get();
         } catch (ExecutionException | InterruptedException ie) {
             ie.printStackTrace();
         }
@@ -41,5 +53,16 @@ public class Sequel {
         return list;
     }
 
+    public List selectCurrency(){
+
+        List list= new ArrayList<>();
+        try {
+            list =new CurrencyTask(mContext).execute().get();
+        } catch (ExecutionException | InterruptedException ie) {
+            ie.printStackTrace();
+        }
+
+        return list;
+    }
 
 }

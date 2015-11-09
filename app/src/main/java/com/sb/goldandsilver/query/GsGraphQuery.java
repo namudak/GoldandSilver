@@ -6,12 +6,12 @@ import java.util.List;
  * Created by namudak on 2015-10-22.
  */
 public class GsGraphQuery implements I_Query{
-    private Sequel goldsilver;
+    private Sequel gsGraph;
 
     public GsGraphQuery(Sequel aQuery){
-        this.goldsilver = aQuery;
+        this.gsGraph = aQuery;
     }
 
-    public List execute() {return goldsilver.selectGraph();}
+    public List execute() {return gsGraph.selectGraph();}
 
 }

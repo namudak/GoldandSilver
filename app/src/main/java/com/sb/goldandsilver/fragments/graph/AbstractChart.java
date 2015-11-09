@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sb.goldandsilver.activities.graph;
+package com.sb.goldandsilver.fragments.graph;
 
 import org.achartengine.chart.PointStyle;
 import org.achartengine.model.CategorySeries;

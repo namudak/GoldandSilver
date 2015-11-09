@@ -8,7 +8,6 @@ import android.util.Log;
 
 import com.sb.goldandsilver.mvctext.GsTextItem;
 import com.sb.goldandsilver.provider.GsContract;
-import com.sb.goldandsilver.provider.GsOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,22 +18,16 @@ import java.util.List;
  * if no db then copy carrying db to apk databases folder
  *
  */
-class GsTextTask extends AsyncTask<Void, Void, List> {
+class GsTextTask extends AsyncTask<String, Void, List> {
 
     private static final String TAG = GsTextTask.class.getSimpleName();
 
     private Context mContext;
 
-    private final GsOpenHelper mDbHelper;
-
     private List goldsilverList = new ArrayList<>();
-    private String parm;
 
-    public GsTextTask(Context context, String parm){
+    public GsTextTask(Context context){
         mContext= context;
-        this.parm= parm;
-
-        mDbHelper = GsOpenHelper.getInstance(mContext);
     }
 
     @Override
@@ -52,7 +45,7 @@ class GsTextTask extends AsyncTask<Void, Void, List> {
             String selection =
                     GsContract.Columns.TIME + " like ? ";
             String[] selectionArgs = new String[]{
-                    "%"+ parm+ "%"
+                    "%"+ "2015"+ "%"
             };
             String sortOrder= GsContract.Columns.TIME+ " ASC";
 
@@ -81,10 +74,9 @@ class GsTextTask extends AsyncTask<Void, Void, List> {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
-
     }
     @Override
-    protected List doInBackground(Void... params) {//1st parameter
+    protected List doInBackground(String... params) {//1st parameter
 
         return goldsilverList;
 
