@@ -13,74 +13,88 @@
         <ListView
             android:id="@+id/lv_gs"
             android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:headerDividersEnabled="false"/>
+            android:layout_height="150dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/gold"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:orientation="horizontal"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:gravity="center_vertical"
+                android:background="#020202">
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="24dp"
                     android:text="5day"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:id="@+id/tv_week"
-                    android:background="@color/lightgray"
+                    android:layout_marginRight="3dp"
                     android:textSize="16sp"
                     android:gravity="center"
-                    android:layout_marginRight="2dp"/>
+                    android:background="#edf6b3"
+                    android:onClick="handleOnClick"
+                    android:typeface="sans" />
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="24dp"
                     android:text="30day"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:id="@+id/tv_month"
-                    android:background="@color/lightgray"
+                    android:layout_marginRight="3dp"
                     android:textSize="16sp"
                     android:gravity="center"
-                    android:layout_marginRight="2dp"/>
+                    android:background="#edf6b3"
+                    android:onClick="handleOnClick"
+                    android:typeface="sans" />
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="24dp"
                     android:text="180day"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:textSize="16sp"
                     android:id="@+id/tv_halfyear"
-                    android:background="@color/lightgray"
+                    android:layout_marginRight="3dp"
                     android:gravity="center"
-                    android:layout_marginRight="2dp"/>
+                    android:background="#edf6b3"
+                    android:onClick="handleOnClick"
+                    android:typeface="sans" />
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="24dp"
                     android:text="year"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:textSize="16sp"
                     android:id="@+id/tv_year"
-                    android:background="@color/lightgray"
+                    android:layout_marginRight="3dp"
                     android:gravity="center"
-                    android:layout_marginRight="2dp"/>
+                    android:background="#edf6b3"
+                    android:typeface="sans" />
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="24dp"
                     android:text="10year"
+                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:textSize="16sp"
                     android:id="@+id/tv_tenyear"
-                    android:background="@color/lightgray"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:background="#edf6b3"
+                    android:onClick="handleOnClick"
+                    android:typeface="sans" />
             </LinearLayout>
 
             <LinearLayout

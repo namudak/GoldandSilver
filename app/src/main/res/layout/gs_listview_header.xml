@@ -1,17 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="30dp"
-    android:background="@android:color/holo_green_light">
+    android:layout_height="50dp"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tv_header"
+        android:id="@+id/tv_date"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:background="@android:color/holo_green_light"
+        android:layout_height="25dp"
         android:textSize="16sp"
-        android:text="This is a header"
+        android:text="This is a date"
         android:layout_centerVertical="true"
         android:gravity="center_vertical"
-        android:paddingLeft="12dp" />
+        android:paddingLeft="8dp" />
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_header1"
+            android:layout_width="0dp"
+            android:background="@android:color/darker_gray"
+            android:layout_height="25dp"
+            android:textSize="16sp"
+            android:text="This is a title"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:paddingLeft="8dp" />
+        <TextView
+            android:id="@+id/tv_header2"
+            android:layout_width="0dp"
+            android:background="@android:color/darker_gray"
+            android:layout_height="25dp"
+            android:textSize="16sp"
+            android:text="This is a title"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:paddingLeft="8dp" />
+        <TextView
+            android:id="@+id/tv_header3"
+            android:layout_width="0dp"
+            android:background="@android:color/darker_gray"
+            android:layout_height="25dp"
+            android:textSize="16sp"
+            android:text="This is a title"
+            android:layout_centerVertical="true"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp" />
+    </LinearLayout>
+</LinearLayout>

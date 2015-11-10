@@ -33,7 +33,7 @@ public class GsView extends LinearLayout{
 
         layoutInflater.inflate(R.layout.gs_listview, this, true);
 
-        mTimeTextView = (TextView)findViewById(R.id.tv_time);
+        //mTimeTextView = (TextView)findViewById(R.id.tv_time);
         mTitleTextView= (TextView)findViewById(R.id.tv_title);
         mPriceTextView = (TextView)findViewById(R.id.tv_price);
         mPriceChangeTextView= (TextView)findViewById(R.id.tv_pricechange);

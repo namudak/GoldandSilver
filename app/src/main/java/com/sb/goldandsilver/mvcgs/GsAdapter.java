@@ -67,9 +67,15 @@ public class GsAdapter extends BaseAdapter {
 
         switch (type) {
             case TYPE_DIVIDER:
-                String str= (String)mList.get(0);
-                TextView header= (TextView)convertView.findViewById(R.id.tv_header);
-                header.setText(str);
+                TextView date= (TextView)convertView.findViewById(R.id.tv_date);
+                TextView header1= (TextView)convertView.findViewById(R.id.tv_header1);
+                TextView header2= (TextView)convertView.findViewById(R.id.tv_header2);
+                TextView header3= (TextView)convertView.findViewById(R.id.tv_header3);
+                String[] strHeaders= ((String)mList.get(0)).split("!");
+                date.setText(strHeaders[0]);
+                header1.setText(strHeaders[1]);
+                header2.setText(strHeaders[2]);
+                header3.setText(strHeaders[3]);
                 break;
             case TYPE_GSITEM:
                 GsItem aItem = (GsItem)mList.get(position);
@@ -90,7 +96,7 @@ public class GsAdapter extends BaseAdapter {
                         percentchange.setText("-2.123%");
                         break;
                 }
-
+                break;
         }
         // Return view
         return convertView;

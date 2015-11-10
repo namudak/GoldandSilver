@@ -1,5 +1,6 @@
 package com.sb.goldandsilver.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.sb.goldandsilver.R;
 import com.sb.goldandsilver.fragments.graph.GsLineChart;
@@ -32,6 +34,11 @@ public class GsFragment extends Fragment{
     private static final String TAG = GsFragment.class.getSimpleName();
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private TextView mFiveday;
+    private TextView mThirtyday;
+    private TextView mOneeigtyday;
+    private TextView mAyear;
+    private TextView mTenyear;
 
     @Nullable
     @Override
@@ -51,7 +58,7 @@ public class GsFragment extends Fragment{
 
         // test list
         list= new ArrayList<GsItem>();
-        String strHeader= "   Metals        Bid(Dollar)       Change";
+        String strHeader= "November 11, 2015(Wed)!Metals!Bid(Dollar)!Change";
         list.add(strHeader);
         GsItem gsItem= new GsItem("2015-11-06", "1105.12", "1107.23", "15.24");
         list.add(gsItem);
@@ -104,6 +111,59 @@ public class GsFragment extends Fragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mFiveday = (TextView)view.findViewById(R.id.tv_week);
+        mFiveday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDefaultBackgroundColor();
+                mFiveday.setBackgroundColor(Color.CYAN);
+            }
+        });
+        mThirtyday = (TextView)view.findViewById(R.id.tv_month);
+        mThirtyday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDefaultBackgroundColor();
+                mThirtyday.setBackgroundColor(Color.CYAN);
+            }
+        });
+        mOneeigtyday = (TextView)view.findViewById(R.id.tv_halfyear);
+        mOneeigtyday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDefaultBackgroundColor();
+                mOneeigtyday.setBackgroundColor(Color.CYAN);
+            }
+        });
+        mAyear = (TextView)view.findViewById(R.id.tv_year);
+        mAyear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDefaultBackgroundColor();
+                mAyear.setBackgroundColor(Color.CYAN);
+            }
+        });
+        mTenyear = (TextView)view.findViewById(R.id.tv_tenyear);
+        mTenyear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDefaultBackgroundColor();
+                mTenyear.setBackgroundColor(Color.CYAN);
+            }
+        });
+
     }
 
+    private void setDefaultBackgroundColor() {
+        String strColor= "#edf6b3";
+        int color= Color.parseColor(strColor);
+
+        mFiveday.setBackgroundColor(color);
+        mThirtyday.setBackgroundColor(color);
+        mOneeigtyday.setBackgroundColor(color);
+        mAyear.setBackgroundColor(color);
+        mTenyear.setBackgroundColor(color);
+
+    }
+    
 }

@@ -57,7 +57,7 @@ public class GsLineChart extends AbstractChart{
         // Now we create Silver Renderer
         XYSeriesRenderer silverRenderer = new XYSeriesRenderer();
         silverRenderer.setLineWidth(2);
-        silverRenderer.setColor(Color.RED);
+        silverRenderer.setColor(Color.GRAY);
         silverRenderer.setDisplayBoundingPoints(true);
         silverRenderer.setPointStyle(PointStyle.POINT);
         silverRenderer.setPointStrokeWidth(3);
@@ -71,7 +71,7 @@ public class GsLineChart extends AbstractChart{
         multiRenderer.setChartTitle("Gold & Silver Chart");
         multiRenderer.setXTitle("Year 2015");
         multiRenderer.setYTitle("Amount in US Dollars");
-        multiRenderer.setZoomButtonsVisible(true);
+        //multiRenderer.setZoomButtonsVisible(true);
         for( int i= 0;i<strYmd.length;i++){
             if (i % 30 == 0) {
                 multiRenderer.addXTextLabel(i, strYmd[i].substring(4, 8));
