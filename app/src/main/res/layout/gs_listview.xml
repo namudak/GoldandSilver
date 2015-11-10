@@ -17,7 +17,7 @@
             android:layout_weight="1"
             android:text="abc"
             android:textSize="20sp"
-            android:paddingLeft="8dp" />
+            android:paddingLeft="12dp" />
         <TextView
             android:id="@+id/tv_price"
             android:layout_width="0dp"

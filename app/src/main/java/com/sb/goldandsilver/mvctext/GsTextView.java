@@ -28,7 +28,7 @@ public class GsTextView extends LinearLayout{
         LayoutInflater layoutInflater= (LayoutInflater)context.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
 
-        layoutInflater.inflate(R.layout.goldsilver_listview, this, true);
+        layoutInflater.inflate(R.layout.gstext_listview, this, true);
 
         mTimeTextView = (TextView)findViewById(R.id.tv_time);
         mTimeTextView.setText(aItem.getTime());

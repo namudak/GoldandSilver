@@ -11,6 +11,7 @@
         android:textSize="16sp"
         android:text="This is a header"
         android:layout_centerVertical="true"
-        android:gravity="center_vertical"/>
+        android:gravity="center_vertical"
+        android:paddingLeft="12dp" />
 
 </RelativeLayout>

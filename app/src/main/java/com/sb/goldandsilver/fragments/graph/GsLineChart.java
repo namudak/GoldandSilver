@@ -65,7 +65,8 @@ public class GsLineChart extends AbstractChart{
         // Creating a XYMultipleSeriesRenderer to customize the whole chart
         XYMultipleSeriesRenderer multiRenderer = new XYMultipleSeriesRenderer();
         multiRenderer.setApplyBackgroundColor(true);
-        multiRenderer.setBackgroundColor(Color.LTGRAY);
+        multiRenderer.setBackgroundColor(Color.BLACK);
+        multiRenderer.setShowGrid(true);
         multiRenderer.setXLabels(0);
         multiRenderer.setChartTitle("Gold & Silver Chart");
         multiRenderer.setXTitle("Year 2015");

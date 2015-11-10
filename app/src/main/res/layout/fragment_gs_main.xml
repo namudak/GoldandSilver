@@ -24,56 +24,62 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:text="5day"
                     android:layout_weight="1"
                     android:id="@+id/tv_week"
-                    android:background="@drawable/xml_border"
+                    android:background="@color/lightgray"
                     android:textSize="16sp"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_marginRight="2dp"/>
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:text="30day"
                     android:layout_weight="1"
                     android:id="@+id/tv_month"
-                    android:background="@drawable/xml_border"
+                    android:background="@color/lightgray"
                     android:textSize="16sp"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_marginRight="2dp"/>
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:text="180day"
                     android:layout_weight="1"
                     android:textSize="16sp"
                     android:id="@+id/tv_halfyear"
-                    android:background="@drawable/xml_border"
-                    android:gravity="center" />
+                    android:background="@color/lightgray"
+                    android:gravity="center"
+                    android:layout_marginRight="2dp"/>
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:text="year"
                     android:layout_weight="1"
                     android:textSize="16sp"
                     android:id="@+id/tv_year"
-                    android:background="@drawable/xml_border"
-                    android:gravity="center" />
+                    android:background="@color/lightgray"
+                    android:gravity="center"
+                    android:layout_marginRight="2dp"/>
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:text="10year"
                     android:layout_weight="1"
                     android:textSize="16sp"
                     android:id="@+id/tv_tenyear"
-                    android:background="@drawable/xml_border"
+                    android:background="@color/lightgray"
                     android:gravity="center" />
             </LinearLayout>
 
